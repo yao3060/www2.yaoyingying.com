@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply pt-[75px];
+}
+
+.entry-content {
+  @apply pb-10;
+  h2 {
+    @apply text-2xl mb-2.5;
+  }
+  h3 {
+    @apply text-xl;
+  }
+
+  h4,
+  h5,
+  h6 {
+    @apply text-lg;
+  }
+
+  p {
+    @apply mb-4;
+  }
+}
+
+.wp-block-code {
+  @apply bg-gray-200 border border-gray-300 shadow-inner p-5;
+}
