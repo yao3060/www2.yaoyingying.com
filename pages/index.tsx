@@ -13,6 +13,7 @@ import {
 } from "use-query-params";
 import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
+import Loading from "components/common/loading";
 
 interface Props {
   posts: Post[];
@@ -26,10 +27,12 @@ const IndexPage = ({ posts, pages, total }: Props) => {
   const [items, setItems] = useState<Post[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const search = async () => {
       setPage(1);
+      setIsLoading(true);
       const { posts, pages, total } = await getPosts({
         search: s,
         page: `1`,
@@ -37,12 +40,14 @@ const IndexPage = ({ posts, pages, total }: Props) => {
       setItems(posts);
       setTotalItems(total);
       setTotalPages(pages);
+      setIsLoading(false);
     };
     search();
   }, [s]);
 
   useEffect(() => {
     const search = async () => {
+      setIsLoading(true);
       const { posts, pages, total } = await getPosts({
         search: s,
         page: page.toString(),
@@ -50,6 +55,7 @@ const IndexPage = ({ posts, pages, total }: Props) => {
       setItems(posts);
       setTotalItems(total);
       setTotalPages(pages);
+      setIsLoading(false);
     };
     search();
   }, [page]);
@@ -66,19 +72,27 @@ const IndexPage = ({ posts, pages, total }: Props) => {
         </title>
       </Head>
 
-      <div className="articles">
-        {items.length
-          ? items.map((post) => <PostItem key={post.id} post={post} />)
-          : posts.map((post) => <PostItem key={post.id} post={post} />)}
+      <div className="articles relative min-h-[500px]">
+        {isLoading ? (
+          <Loading />
+        ) : items.length ? (
+          items.map((post) => <PostItem key={post.id} post={post} />)
+        ) : (
+          posts.map((post) => <PostItem key={post.id} post={post} />)
+        )}
       </div>
 
-      <Pagination
-        total={totalItems ?? total}
-        pages={totalPages ?? pages}
-        siblings={1}
-        className=""
-        handelChange={handelPageChange}
-      />
+      {isLoading ? (
+        ""
+      ) : (
+        <Pagination
+          total={totalItems ?? total}
+          pages={totalPages ?? pages}
+          siblings={1}
+          className=""
+          handelChange={handelPageChange}
+        />
+      )}
     </Layout>
   );
 };
