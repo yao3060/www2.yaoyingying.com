@@ -6,10 +6,10 @@ import ItemImage from "./item-image";
 const PostItem = ({ post }: { post: Post }) => {
   let featuredMedia = post.x_featured_media_medium ?? IMAGE_PLACEHOLDER;
 
-  console.log("featuredMedia:", featuredMedia, post);
+  // console.log("featuredMedia:", featuredMedia, post);
   return (
     <article id={`post-${post.id}`} className="flex gap-4 border-b py-5">
-      <div className="feature-image w-[300px]">
+      <div className="feature-image w-[300px] ">
         <ItemImage
           title={post.title.rendered}
           url={featuredMedia}

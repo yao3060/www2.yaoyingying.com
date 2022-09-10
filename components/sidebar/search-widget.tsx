@@ -1,21 +1,28 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useQueryParam, StringParam, withDefault } from "use-query-params";
-import { useDebounce } from "usehooks-ts";
+import { useDebounce } from "react-use";
 
 const SearchWidget = () => {
   const router = useRouter();
 
   const [keyword, setKeyword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const debouncedValue = useDebounce<string>(keyword, 500);
   const [s, setS] = useQueryParam("s", withDefault(StringParam, ""));
 
-  // Fetch API (optional)
   useEffect(() => {
-    console.log('Triggers when "debouncedValue" changes', debouncedValue);
-    setS(debouncedValue);
-  }, [debouncedValue]);
+    if (s) {
+      setKeyword(s);
+    }
+  }, [s]);
+
+  useDebounce(
+    () => {
+      setS(keyword);
+    },
+    500,
+    [keyword]
+  );
 
   const search = async () => {
     console.log("keyword:", keyword);

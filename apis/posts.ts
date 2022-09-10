@@ -12,8 +12,16 @@ export async function getPosts(
 ) {
   const qs = new URLSearchParams(params);
   const res = await fetch(`${API_URL}/wp/v2/posts?${qs}`);
+  if (!res.ok) {
+    console.error("HTTP-Error: " + res.status);
+  }
   const posts: Post[] = await res.json();
-  return posts;
+
+  return {
+    posts,
+    total: Number(res.headers.get("x-wp-total") ?? 0),
+    pages: Number(res.headers.get("x-wp-totalpages") ?? 1),
+  };
 }
 
 export async function getPost(slug: string) {

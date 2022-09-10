@@ -1,13 +1,31 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import Layout from "../layouts/page-layout";
 import { getPosts } from "apis/posts";
 import { Post } from "../interfaces";
 import PostItem from "components/posts/item";
 import Head from "next/head";
 import { SITE_NAME, SITE_DESCRIPTION } from "../utils/constants";
-import { useState } from "react";
+import { useQueryParam, StringParam, withDefault } from "use-query-params";
+import React, { useEffect, useState } from "react";
+import Pagination from "components/posts/pagination";
 
-const IndexPage = ({ posts, preview }: { posts: Post[]; preview: boolean }) => {
+interface Props {
+  posts: Post[];
+  pages: number;
+  total: number;
+}
+
+const IndexPage = ({ posts, pages, total }: Props) => {
+  const [s, setS] = useQueryParam("s", withDefault(StringParam, ""));
+  const [items, setItems] = useState<Post[]>([]);
+
+  useEffect(() => {
+    const search = async () => {
+      // setItems(s ? await getPosts({ search: s }) : []);
+    };
+    search();
+  }, [s]);
+
   return (
     <Layout title="Home | Next.js + TypeScript Example">
       <Head>
@@ -15,19 +33,23 @@ const IndexPage = ({ posts, preview }: { posts: Post[]; preview: boolean }) => {
           {SITE_NAME} - {SITE_DESCRIPTION}
         </title>
       </Head>
-      {posts.map((post) => (
-        <PostItem key={post.id} post={post} />
-      ))}
+
+      <div className="articles">
+        {items.length
+          ? items.map((post) => <PostItem key={post.id} post={post} />)
+          : posts.map((post) => <PostItem key={post.id} post={post} />)}
+      </div>
+
+      <Pagination total={total} pages={pages} />
     </Layout>
   );
 };
 
 export default IndexPage;
 
-export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
-  const posts = await getPosts();
+export const getServerSideProps: GetServerSideProps = async () => {
+  const { posts, pages, total } = await getPosts();
   return {
-    props: { posts, preview },
-    revalidate: 10,
+    props: { posts, pages, total },
   };
 };
