@@ -10,19 +10,7 @@ const SearchWidget = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [s, setS] = useQueryParam("s", withDefault(StringParam, ""));
 
-  useEffect(() => {
-    if (s) {
-      setKeyword(s);
-    }
-  }, [s]);
-
-  useDebounce(
-    () => {
-      setS(keyword);
-    },
-    500,
-    [keyword]
-  );
+  useDebounce(() => setS(keyword === "" ? null : keyword), 500, [keyword]);
 
   const search = async () => {
     console.log("keyword:", keyword);

@@ -5,7 +5,12 @@ import { Post } from "../interfaces";
 import PostItem from "components/posts/item";
 import Head from "next/head";
 import { SITE_NAME, SITE_DESCRIPTION } from "../utils/constants";
-import { useQueryParam, StringParam, withDefault } from "use-query-params";
+import {
+  useQueryParam,
+  StringParam,
+  NumberParam,
+  withDefault,
+} from "use-query-params";
 import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
 
@@ -16,15 +21,42 @@ interface Props {
 }
 
 const IndexPage = ({ posts, pages, total }: Props) => {
-  const [s, setS] = useQueryParam("s", withDefault(StringParam, ""));
+  const [s] = useQueryParam("s", withDefault(StringParam, ""));
+  const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
   const [items, setItems] = useState<Post[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
 
   useEffect(() => {
     const search = async () => {
-      // setItems(s ? await getPosts({ search: s }) : []);
+      setPage(1);
+      const { posts, pages, total } = await getPosts({
+        search: s,
+        page: `1`,
+      });
+      setItems(posts);
+      setTotalItems(total);
+      setTotalPages(pages);
     };
     search();
   }, [s]);
+
+  useEffect(() => {
+    const search = async () => {
+      const { posts, pages, total } = await getPosts({
+        search: s,
+        page: page.toString(),
+      });
+      setItems(posts);
+      setTotalItems(total);
+      setTotalPages(pages);
+    };
+    search();
+  }, [page]);
+
+  const handelPageChange = (page: number) => {
+    console.log("page", page);
+  };
 
   return (
     <Layout title="Home | Next.js + TypeScript Example">
@@ -40,7 +72,13 @@ const IndexPage = ({ posts, pages, total }: Props) => {
           : posts.map((post) => <PostItem key={post.id} post={post} />)}
       </div>
 
-      <Pagination total={total} pages={pages} />
+      <Pagination
+        total={totalItems ?? total}
+        pages={totalPages ?? pages}
+        siblings={1}
+        className=""
+        handelChange={handelPageChange}
+      />
     </Layout>
   );
 };

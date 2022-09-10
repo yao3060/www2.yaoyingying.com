@@ -2,14 +2,7 @@ import { Post } from "interfaces";
 
 const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
 
-export async function getPosts(
-  params?:
-    | string
-    | URLSearchParams
-    | string[][]
-    | Record<string, string>
-    | undefined
-) {
+export async function getPosts(params?: Record<string, string>) {
   const qs = new URLSearchParams(params);
   const res = await fetch(`${API_URL}/wp/v2/posts?${qs}`);
   if (!res.ok) {
