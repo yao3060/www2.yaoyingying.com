@@ -31,7 +31,7 @@ const IndexPage = ({ posts, pages, total }: Props) => {
 
   useEffect(() => {
     const search = async () => {
-      setPage(1);
+      setPage(null);
       setIsLoading(true);
       const { posts, pages, total } = await getPosts({
         search: s,

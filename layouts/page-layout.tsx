@@ -23,7 +23,7 @@ export default function PageLayout({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Header />
-      <PageHeader />
+      <PageHeader title={title} />
 
       <main id="content">
         <div className="container m-auto">
