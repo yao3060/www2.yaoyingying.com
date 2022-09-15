@@ -46,7 +46,7 @@ export default function PostPage({ post }: { post: Post }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getPosts();
+  const { posts } = await getPosts();
 
   return {
     paths: posts.map((node) => `/posts/${node.slug}`) || [],
