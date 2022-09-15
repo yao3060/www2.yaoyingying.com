@@ -24,7 +24,7 @@ export default function CategoryPage({ category }: { category: Category }) {
       <main>
         <h1> </h1>
 
-        {childItems ? (
+        {childItems?.length ? (
           <div className="child-categories">
             <span className="pr-2.5">Categories:</span>
             {childItems.map((item) => (
