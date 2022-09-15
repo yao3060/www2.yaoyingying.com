@@ -9,12 +9,10 @@ import Sidebar from "components/sidebar";
 type Props = {
   children?: ReactNode;
   title?: string;
+  description?: string;
 };
 
-export default function PageLayout({
-  children,
-  title = "This is the default title",
-}: Props) {
+export default function PageLayout({ children, title, description }: Props) {
   return (
     <>
       <Head>
@@ -23,7 +21,7 @@ export default function PageLayout({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Header />
-      <PageHeader title={title} />
+      <PageHeader title={title} description={description} />
 
       <main id="content">
         <div className="container m-auto">

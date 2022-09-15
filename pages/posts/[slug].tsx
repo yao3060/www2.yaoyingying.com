@@ -15,7 +15,7 @@ export default function PostPage({ post }: { post: Post }) {
   }
 
   return (
-    <Layout title="title">
+    <Layout>
       <Head>
         <title>
           {post.title.rendered} - {SITE_NAME}

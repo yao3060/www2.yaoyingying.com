@@ -8,3 +8,7 @@ export function getCategories(params: Record<string, string | number>) {
   });
   return res;
 }
+
+export function getCategory(slug: string) {
+  return getCategories({ slug });
+}

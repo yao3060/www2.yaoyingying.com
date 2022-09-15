@@ -23,3 +23,9 @@ export interface Post {
   featured_media: number;
   x_featured_media_medium?: string;
 }
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}

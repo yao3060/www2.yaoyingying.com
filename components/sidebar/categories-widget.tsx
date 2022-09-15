@@ -1,11 +1,7 @@
 import { getCategories } from "apis/categories";
+import { Category } from "interfaces";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-interface Category {
-  name: string;
-  slug: string;
-}
 
 const CategoriesWidget = () => {
   const [items, setItems] = useState<Category[] | null>(null);
@@ -25,7 +21,7 @@ const CategoriesWidget = () => {
       <ul className="menu menu-compact bg-base-100">
         {items ? (
           items.map((item) => (
-            <li className="hover-bordered">
+            <li className="hover-bordered" key={item.slug}>
               <Link href={`/category/${item.slug}`}>
                 <a>{item.name}</a>
               </Link>
