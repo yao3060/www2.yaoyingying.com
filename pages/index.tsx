@@ -14,6 +14,8 @@ import {
 import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
+import { isObjectEmpty } from "utils/functions";
+import { useEffectOnce } from "react-use";
 
 interface Props {
   posts: Post[];
@@ -24,44 +26,38 @@ interface Props {
 const IndexPage = ({ posts, pages, total }: Props) => {
   const [s] = useQueryParam("s", withDefault(StringParam, ""));
   const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
-  const [items, setItems] = useState<Post[]>([]);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [totalItems, setTotalItems] = useState<number>(0);
+  const [items, setItems] = useState<Post[]>(posts);
+  const [totalPages, setTotalPages] = useState<number>(pages);
+  const [totalItems, setTotalItems] = useState<number>(total);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const search = async () => {
       setPage(null);
       setIsLoading(true);
-      const { posts, pages, total } = await getPosts({
+      const response = await getPosts({
         search: s,
         page: `1`,
       });
-      setItems(posts);
-      setTotalItems(total);
-      setTotalPages(pages);
+      setItems(response.data);
+      setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
+      setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
       setIsLoading(false);
     };
     search();
   }, [s]);
 
-  useEffect(() => {
-    const search = async () => {
-      setIsLoading(true);
-      const { posts, pages, total } = await getPosts({
-        search: s,
-        page: page.toString(),
-      });
-      setItems(posts);
-      setTotalItems(total);
-      setTotalPages(pages);
-      setIsLoading(false);
-    };
-    search();
-  }, [page]);
-
-  const handelPageChange = (page: number) => {
+  const handelPageChange = async (page: number) => {
     console.log("page", page);
+    setIsLoading(true);
+    const response = await getPosts({
+      search: s,
+      page: page.toString(),
+    });
+    setItems(response.data);
+    setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
+    setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
+    setIsLoading(false);
   };
 
   return (
@@ -86,8 +82,8 @@ const IndexPage = ({ posts, pages, total }: Props) => {
         ""
       ) : (
         <Pagination
-          total={totalItems ?? total}
-          pages={totalPages ?? pages}
+          total={totalItems}
+          pages={totalPages}
           siblings={1}
           className=""
           handelChange={handelPageChange}
@@ -99,9 +95,14 @@ const IndexPage = ({ posts, pages, total }: Props) => {
 
 export default IndexPage;
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const { posts, pages, total } = await getPosts();
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const response = await getPosts(query);
+
   return {
-    props: { posts, pages, total },
+    props: {
+      posts: response.data,
+      total: Number(response.headers["x-wp-total"] ?? 0),
+      pages: Number(response.headers["x-wp-totalpages"] ?? 1),
+    },
   };
 };

@@ -1,25 +1,25 @@
 import { Post } from "interfaces";
+import { NextParsedUrlQuery } from "next/dist/server/request-meta";
+import request from "../utils/request";
 
-const API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
+export function getPosts(params?: NextParsedUrlQuery) {
+  const response = request({
+    url: `/wp/v2/posts`,
+    method: "get",
+    params,
+  });
 
-export async function getPosts(params?: Record<string, string>) {
-  const qs = params !== undefined ? new URLSearchParams(params).toString() : "";
-
-  const res = await fetch(`${API_URL}/wp/v2/posts?${qs}`);
-  if (!res.ok) {
-    console.error("HTTP-Error: " + res.status);
-  }
-  const posts: Post[] = await res.json();
-
-  return {
-    posts,
-    total: Number(res.headers.get("x-wp-total") ?? 0),
-    pages: Number(res.headers.get("x-wp-totalpages") ?? 1),
-  };
+  return response;
 }
 
-export async function getPost(slug: string) {
-  const res = await fetch(`${API_URL}/wp/v2/posts?slug=${slug}`);
-  const posts: Post[] = await res.json();
-  return posts[0];
+export function getPost(slug: string) {
+  const response = request({
+    url: `/wp/v2/posts`,
+    method: "get",
+    params: {
+      slug,
+    },
+  });
+
+  return response;
 }

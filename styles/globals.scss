@@ -9,10 +9,10 @@ body {
 .entry-content {
   @apply pb-10;
   h2 {
-    @apply text-2xl mb-2.5;
+    @apply text-2xl mb-5;
   }
   h3 {
-    @apply text-xl;
+    @apply text-xl mb-2.5;
   }
 
   h4,
@@ -24,8 +24,12 @@ body {
   p {
     @apply mb-4;
   }
+
+  ul {
+    @apply mb-5;
+  }
 }
 
 .wp-block-code {
-  @apply bg-gray-200 border border-gray-300 shadow-inner p-5;
+  @apply bg-gray-200 border border-gray-300 shadow-inner p-5 whitespace-pre-line mb-5;
 }

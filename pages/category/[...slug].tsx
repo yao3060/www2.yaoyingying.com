@@ -4,9 +4,16 @@ import { getCategories, getCategory } from "apis/categories";
 import { Category } from "interfaces";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import last from "lodash/last";
+import InlineTerms from "components/posts/inline-terms";
+import Loading from "components/common/loading";
+import Pagination from "components/posts/pagination";
 
 export default function CategoryPage({ category }: { category: Category }) {
   const [childItems, setChildItems] = useState<Category[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState<number>(0);
 
   const getChildCategories = async (parent: number) => {
     const response = await getCategories({ parent });
@@ -15,28 +22,31 @@ export default function CategoryPage({ category }: { category: Category }) {
     }
   };
 
+  const handelPageChange = (page: number) => {
+    console.log("page", page);
+  };
+
   useEffect(() => {
     getChildCategories(category.id);
   }, [category]);
 
   return (
     <Layout title={`Category: ${category.name}`} description="">
-      <main>
-        <h1> </h1>
-
-        {childItems?.length ? (
-          <div className="child-categories">
-            <span className="pr-2.5">Categories:</span>
-            {childItems.map((item) => (
-              <Link href={item.slug}>
-                <a className="link link-hover px-2.5">{item.name}</a>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          ""
-        )}
-      </main>
+      <InlineTerms taxonomy="category" items={childItems} />
+      <div className="articles relative min-h-[500px]">
+        <Loading />
+      </div>
+      {isLoading ? (
+        ""
+      ) : (
+        <Pagination
+          total={totalItems}
+          pages={totalPages}
+          siblings={1}
+          className=""
+          handelChange={handelPageChange}
+        />
+      )}
     </Layout>
   );
 }
@@ -61,7 +71,9 @@ export const getServerSideProps: GetServerSideProps = async ({
     "public, s-max-age=10, stale-while-revalidate=59"
   );
 
-  const response = await getCategory(params?.slug as string);
+  console.log("params,", last(params?.slug));
+
+  const response = await getCategory(last(params?.slug) as string);
   return {
     props: {
       category: response.data[0] ?? [],

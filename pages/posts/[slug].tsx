@@ -1,6 +1,6 @@
-import { getPost, getPosts } from "apis/posts";
+import { getPost } from "apis/posts";
 import { Post } from "interfaces";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { SITE_NAME, IMAGE_PLACEHOLDER } from "../../utils/constants";
@@ -10,9 +10,6 @@ export default function PostPage({ post }: { post: Post }) {
   console.log("post:", post);
 
   const router = useRouter();
-
-  if (router.isFallback) {
-  }
 
   return (
     <Layout>
@@ -45,22 +42,12 @@ export default function PostPage({ post }: { post: Post }) {
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const { posts } = await getPosts();
-
-  return {
-    paths: posts.map((node) => `/posts/${node.slug}`) || [],
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const post = await getPost(params?.slug as string);
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const response = await getPost(params?.slug as string);
 
   return {
     props: {
-      post,
+      post: response.data[0] ?? [],
     },
-    revalidate: 10,
   };
 };
