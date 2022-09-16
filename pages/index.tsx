@@ -74,7 +74,7 @@ const IndexPage = ({ posts, pages, total }: Props) => {
         ) : items.length ? (
           items.map((post) => <PostItem key={post.id} post={post} />)
         ) : (
-          posts.map((post) => <PostItem key={post.id} post={post} />)
+          <div>No Posts</div>
         )}
       </div>
 

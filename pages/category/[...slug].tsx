@@ -1,25 +1,37 @@
 import Layout from "../../layouts/page-layout";
 import { GetServerSideProps } from "next";
 import { getCategories, getCategory } from "apis/categories";
-import { Category } from "interfaces";
+import { Category, Post } from "interfaces";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import last from "lodash/last";
 import InlineTerms from "components/posts/inline-terms";
 import Loading from "components/common/loading";
 import Pagination from "components/posts/pagination";
+import { getPosts } from "apis/posts";
+import PostItem from "components/posts/item";
 
 export default function CategoryPage({ category }: { category: Category }) {
-  const [childItems, setChildItems] = useState<Category[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [childCats, setChildCats] = useState<Category[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState<Post[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
 
   const getChildCategories = async (parent: number) => {
     const response = await getCategories({ parent });
     if (response && response.data) {
-      setChildItems(response.data);
+      setChildCats(response.data);
     }
+  };
+
+  const getItems = async () => {
+    setIsLoading(true);
+    const response = await getPosts({ categories: [category.id.toString()] });
+    setItems(response.data);
+    setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
+    setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
+    setIsLoading(false);
   };
 
   const handelPageChange = (page: number) => {
@@ -28,14 +40,23 @@ export default function CategoryPage({ category }: { category: Category }) {
 
   useEffect(() => {
     getChildCategories(category.id);
+    getItems();
   }, [category]);
 
   return (
     <Layout title={`Category: ${category.name}`} description="">
-      <InlineTerms taxonomy="category" items={childItems} />
+      <InlineTerms taxonomy="category" items={childCats} />
+
       <div className="articles relative min-h-[500px]">
-        <Loading />
+        {isLoading ? (
+          <Loading />
+        ) : items.length ? (
+          items.map((post) => <PostItem key={post.id} post={post} />)
+        ) : (
+          <div>No Posts</div>
+        )}
       </div>
+
       {isLoading ? (
         ""
       ) : (

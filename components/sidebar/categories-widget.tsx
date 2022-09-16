@@ -7,7 +7,6 @@ const CategoriesWidget = () => {
   const [items, setItems] = useState<Category[] | null>(null);
   const getData = async () => {
     const response = await getCategories({ parent: 0, per_page: 100 });
-    console.log("response,", response);
     setItems(response.data);
   };
 

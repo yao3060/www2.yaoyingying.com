@@ -23,3 +23,13 @@ export function getPost(slug: string) {
 
   return response;
 }
+
+export function getRelatedPosts(postId: number) {
+  // https://www.yaoin.net/wp-json/yarpp/v1/related/3648
+  const response = request({
+    url: `/yarpp/v1/related/${postId}`,
+    method: "get",
+  });
+
+  return response;
+}
