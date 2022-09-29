@@ -12,7 +12,11 @@ type Props = {
   description?: string;
 };
 
-export default function PageLayout({ children, title, description }: Props) {
+export default function OneColumnLayout({
+  children,
+  title,
+  description,
+}: Props) {
   return (
     <>
       <Head>
@@ -43,14 +47,8 @@ export default function PageLayout({ children, title, description }: Props) {
       <main id="content">
         <div className="container m-auto">
           <div className="flex justify-between w-full">
-            <div
-              id="primary"
-              className="w-3/4 pt-5 pr-10 border-r border-[#e9e9e9]"
-            >
+            <div id="primary" className="w-full pt-5 ">
               {children}
-            </div>
-            <div id="secondary" className="w-1/4">
-              <Sidebar />
             </div>
           </div>
         </div>

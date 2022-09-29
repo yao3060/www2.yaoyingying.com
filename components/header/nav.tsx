@@ -15,6 +15,11 @@ const Nav = () => {
           </Link>
         </li>
         <li>
+          <Link href="/posts">
+            <a className="px-5 block tracking-wide leading-[75px]">Blog</a>
+          </Link>
+        </li>
+        <li>
           <Link href="/contact">
             <a className="px-5 block tracking-wide leading-[75px]">Contact</a>
           </Link>
