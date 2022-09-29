@@ -15,48 +15,19 @@ import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
 import PostsSearch from "components/posts/search";
+import usePostStore from "stores/posts";
+import shallow from "zustand/shallow";
 
-interface Props {
-  posts: Post[];
-  pages: number;
-  total: number;
-}
-
-const PostsPage = ({ posts, pages, total }: Props) => {
-  const [s] = useQueryParam("s", withDefault(StringParam, ""));
-  const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
-  const [items, setItems] = useState<Post[]>(posts);
-  const [totalPages, setTotalPages] = useState<number>(pages);
-  const [totalItems, setTotalItems] = useState<number>(total);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const search = async () => {
-      setPage(null);
-      setIsLoading(true);
-      const response = await getPosts({
-        search: s,
-        page: `1`,
-      });
-      setItems(response.data);
-      setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
-      setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
-      setIsLoading(false);
-    };
-    search();
-  }, [s]);
+const PostsPage = () => {
+  const filter = usePostStore((state) => state.filter, shallow);
+  const setFilter = usePostStore((state) => state.setFilter);
+  const items = usePostStore((state) => state.posts);
+  const total = usePostStore((state) => state.total);
+  const pages = usePostStore((state) => state.pages);
+  const isLoading = usePostStore((state) => state.isLoading);
 
   const handelPageChange = async (page: number) => {
-    console.log("page", page);
-    setIsLoading(true);
-    const response = await getPosts({
-      search: s,
-      page: page.toString(),
-    });
-    setItems(response.data);
-    setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
-    setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
-    setIsLoading(false);
+    setFilter({ ...filter, page });
   };
 
   return (
@@ -83,8 +54,8 @@ const PostsPage = ({ posts, pages, total }: Props) => {
         ""
       ) : (
         <Pagination
-          total={totalItems}
-          pages={totalPages}
+          total={total}
+          pages={pages}
           siblings={1}
           className=""
           handelChange={handelPageChange}
@@ -95,15 +66,3 @@ const PostsPage = ({ posts, pages, total }: Props) => {
 };
 
 export default PostsPage;
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const response = await getPosts(query);
-
-  return {
-    props: {
-      posts: response.data,
-      total: Number(response.headers["x-wp-total"] ?? 0),
-      pages: Number(response.headers["x-wp-totalpages"] ?? 1),
-    },
-  };
-};

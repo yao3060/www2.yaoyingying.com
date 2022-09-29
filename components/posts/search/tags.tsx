@@ -2,9 +2,10 @@ import { getTags } from "apis/categories";
 import { Category } from "interfaces";
 import React, { useEffect, useRef, useState } from "react";
 import usePostStore from "stores/posts";
+import shallow from "zustand/shallow";
 
 export default function PostsSearchTags() {
-  const filter = usePostStore((state) => state.filter);
+  const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);
 
   const [items, setItems] = useState<Category[]>([]);
@@ -20,12 +21,15 @@ export default function PostsSearchTags() {
 
   const handleOnChange = (id: string) => {
     if (!filter.tags) {
-      setFilter({ tags: [id] });
+      setFilter({ ...filter, tags: [id] });
     } else {
       if (filter.tags.includes(id)) {
-        setFilter({ tags: filter.tags.filter((item) => item != id) });
+        setFilter({
+          ...filter,
+          tags: filter.tags.filter((item) => item != id),
+        });
       } else {
-        setFilter({ tags: [...filter.tags, id] });
+        setFilter({ ...filter, tags: [...filter.tags, id] });
       }
     }
   };
@@ -40,7 +44,7 @@ export default function PostsSearchTags() {
       <div className="flex">
         {items
           ? items.map((item) => (
-              <div className="form-control" key={item.id}>
+              <div className="form-control mr-2.5" key={item.id}>
                 <label className="label cursor-pointer">
                   <input
                     type="checkbox"

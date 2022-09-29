@@ -1,8 +1,9 @@
 import React from "react";
 import usePostStore from "stores/posts";
+import shallow from "zustand/shallow";
 
 export default function PostsSearchKeyword() {
-  const filter = usePostStore((state) => state.filter);
+  const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);
   return (
     <div className="form-control">
@@ -11,7 +12,7 @@ export default function PostsSearchKeyword() {
           type="text"
           placeholder="Search…"
           className="input input-bordered"
-          onChange={(e) => setFilter({ ...filter, s: e.target.value })}
+          onChange={(e) => setFilter({ ...filter, search: e.target.value })}
         />
         <button className="btn btn-square">
           <svg

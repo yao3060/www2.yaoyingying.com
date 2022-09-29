@@ -1,34 +1,53 @@
 import { getPosts } from "apis/posts";
 import { Post } from "interfaces";
-import { NextParsedUrlQuery } from "next/dist/server/request-meta";
-import { useLayoutEffect } from "react";
 import create from "zustand";
 import shallow from "zustand/shallow";
+import { mountStoreDevtool } from "simple-zustand-devtools";
 
 type Filter = {
-  s?: string;
+  search?: string;
   tags?: string[];
   categories?: string[];
+  page?: number;
 };
 
 interface Store {
+  isLoading: boolean;
   filter: Filter;
   setFilter: (filter: Filter) => void;
+
+  getItems: () => void;
   posts: Post[];
-  getItems: (params?: Filter) => void;
-  setItems: (items: Post[]) => void;
+  total: number;
+  pages: number;
 }
 
-const usePostStore = create<Store>((set) => ({
+const usePostStore = create<Store>((set, get) => ({
+  isLoading: false,
   filter: {
-    s: "",
+    search: undefined,
     tags: [],
     categories: [],
   },
   posts: [],
-  getItems: () => ({}),
-  setItems: (posts: Post[]) => set((state) => ({ ...state, posts })),
+  total: 0,
+  pages: 1,
+  getItems: async () => {
+    set((state) => ({ ...state, isLoading: true }));
+    const response = await getPosts(get().filter);
+    set((state) => ({
+      ...state,
+      posts: response.data,
+      total: Number(response.headers["x-wp-total"] ?? 0),
+      pages: Number(response.headers["x-wp-totalpages"] ?? 1),
+      isLoading: false,
+    }));
+  },
   setFilter: (filter: Filter) => set((state) => ({ ...state, filter })),
 }));
+
+if (process.env.NODE_ENV === "development") {
+  mountStoreDevtool("PostStore", usePostStore);
+}
 
 export default usePostStore;

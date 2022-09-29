@@ -2,9 +2,10 @@ import { getCategories } from "apis/categories";
 import { Category } from "interfaces";
 import React, { useEffect, useState } from "react";
 import usePostStore from "stores/posts";
+import shallow from "zustand/shallow";
 
 export default function PostsSearchCategories() {
-  const filter = usePostStore((state) => state.filter);
+  const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);
 
   const [items, setItems] = useState<Category[] | null>(null);
