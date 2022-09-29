@@ -1,17 +1,18 @@
 import { getPosts } from "apis/posts";
 import { Post } from "interfaces";
 import create from "zustand";
-import shallow from "zustand/shallow";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 
 type Filter = {
   search?: string;
   tags?: string[];
-  categories?: string[];
-  page?: number;
+  categories?: string;
+  page?: string;
 };
 
 interface Store {
+  init: boolean;
+  setInit: CallableFunction;
   isLoading: boolean;
   filter: Filter;
   setFilter: (filter: Filter) => void;
@@ -23,11 +24,12 @@ interface Store {
 }
 
 const usePostStore = create<Store>((set, get) => ({
+  init: false,
   isLoading: false,
   filter: {
     search: undefined,
     tags: [],
-    categories: [],
+    categories: undefined,
   },
   posts: [],
   total: 0,
@@ -44,6 +46,7 @@ const usePostStore = create<Store>((set, get) => ({
     }));
   },
   setFilter: (filter: Filter) => set((state) => ({ ...state, filter })),
+  setInit: (value: boolean) => set((state) => ({ ...state, init: value })),
 }));
 
 if (process.env.NODE_ENV === "development") {

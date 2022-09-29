@@ -21,15 +21,16 @@ export default function PostsSearchTags() {
 
   const handleOnChange = (id: string) => {
     if (!filter.tags) {
-      setFilter({ ...filter, tags: [id] });
+      setFilter({ ...filter, tags: [id], page: "1" });
     } else {
       if (filter.tags.includes(id)) {
         setFilter({
           ...filter,
           tags: filter.tags.filter((item) => item != id),
+          page: "1",
         });
       } else {
-        setFilter({ ...filter, tags: [...filter.tags, id] });
+        setFilter({ ...filter, tags: [...filter.tags, id], page: "1" });
       }
     }
   };

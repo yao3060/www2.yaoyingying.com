@@ -1,16 +1,7 @@
-import { GetServerSideProps } from "next";
 import Layout from "../../layouts/one-column-layout";
-import { getPosts } from "apis/posts";
-import { Post } from "../../interfaces";
 import PostItem from "components/posts/item";
 import Head from "next/head";
 import { SITE_NAME, SITE_DESCRIPTION } from "../../utils/constants";
-import {
-  useQueryParam,
-  StringParam,
-  NumberParam,
-  withDefault,
-} from "use-query-params";
 import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
@@ -27,7 +18,7 @@ const PostsPage = () => {
   const isLoading = usePostStore((state) => state.isLoading);
 
   const handelPageChange = async (page: number) => {
-    setFilter({ ...filter, page });
+    setFilter({ ...filter, page: page.toString() });
   };
 
   return (

@@ -22,7 +22,9 @@ export default function PostsSearchCategories() {
     <div className="form-control mr-5">
       <select
         className="select select-bordered w-full max-w-xs"
-        onChange={(e) => setFilter({ ...filter, categories: [e.target.value] })}
+        onChange={(e) =>
+          setFilter({ ...filter, categories: e.target.value, page: "1" })
+        }
       >
         <option disabled value="0">
           Categories

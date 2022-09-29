@@ -1,4 +1,3 @@
-import { Post } from "interfaces";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 import request from "../utils/request";
 

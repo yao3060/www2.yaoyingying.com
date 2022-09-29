@@ -5,24 +5,44 @@ import PostsSearchKeyword from "./keyword";
 import PostsSearchTags from "./tags";
 import qs from "qs";
 import shallow from "zustand/shallow";
+import { useEffectOnce } from "react-use";
 
 export default function PostsSearch() {
+  const init = usePostStore((state) => state.init);
+  const setInit = usePostStore((state) => state.setInit);
   const filter = usePostStore((state) => state.filter, shallow);
+  const setFilter = usePostStore((state) => state.setFilter);
   const getItems = usePostStore((state) => state.getItems);
 
   useEffect(() => {
-    window.history.replaceState(
-      null,
-      "",
-      qs.stringify(filter, {
-        encode: false,
-        addQueryPrefix: true,
-        arrayFormat: "brackets",
-      })
-    );
+    if (init) {
+      window.history.replaceState(
+        null,
+        "",
+        qs.stringify(filter, {
+          encode: false,
+          addQueryPrefix: true,
+          arrayFormat: "brackets",
+        })
+      );
 
-    getItems();
-  }, [filter]);
+      getItems();
+    }
+  }, [filter, init]);
+
+  // restore query strings
+  useEffectOnce(() => {
+    // window.location.search
+    console.log(
+      "window.location.search:",
+      qs.parse(window.location.search, { ignoreQueryPrefix: true })
+    );
+    setFilter({
+      ...filter,
+      ...qs.parse(window.location.search, { ignoreQueryPrefix: true }),
+    });
+    setInit(true);
+  });
 
   return (
     <div>
