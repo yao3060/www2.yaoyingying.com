@@ -1,41 +1,19 @@
 {
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint"],
   "extends": [
     "next",
     "next/core-web-vitals",
-    "airbnb",
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true,
       "modules": true
-    }
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
   },
-  "rules": {
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
-    "indent": ["error", 2, { "SwitchCase": 1 }],
-    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
-    "react/jsx-filename-extension": [
-      2,
-      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
-    ],
-    "semi": ["error", "always"],
-    "arrow-spacing": 2,
-    "array-bracket-spacing": 2,
-    "comma-spacing": 2,
-    "block-spacing": 2,
-    "comma-dangle": ["error", "always-multiline"],
-    "eqeqeq": "error"
-  }
+  "rules": {}
 }

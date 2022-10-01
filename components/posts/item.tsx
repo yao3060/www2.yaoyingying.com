@@ -4,9 +4,8 @@ import { IMAGE_PLACEHOLDER } from "utils/constants";
 import ItemImage from "./item-image";
 
 const PostItem = ({ post }: { post: Post }) => {
-  let featuredMedia = post.x_featured_media_medium ?? IMAGE_PLACEHOLDER;
+  const featuredMedia = post.x_featured_media_medium ?? IMAGE_PLACEHOLDER;
 
-  // console.log("featuredMedia:", featuredMedia, post);
   return (
     <article id={`post-${post.id}`} className="flex gap-4 border-b py-5">
       <div className="feature-image w-[300px] ">
@@ -19,8 +18,9 @@ const PostItem = ({ post }: { post: Post }) => {
         />
       </div>
       <div className="content">
-        <div className="meta text-[#0275d8] uppercase text-xs tracking-widest mb-2.5">
-          {post.x_categories}
+        <div className="meta flex justify-between text-xs tracking-widest mb-2.5">
+          <div className="text-[#0275d8] uppercase">{post.x_categories}</div>
+          <div className="post-date">{post.x_date}</div>
         </div>
         <div className="title">
           <h2 className="text-xl">

@@ -1,5 +1,5 @@
-import { GetServerSideProps, GetStaticProps } from "next";
-import Layout from "../layouts/page-layout";
+import { GetServerSideProps } from "next";
+
 import { getPosts } from "apis/posts";
 import { Post } from "../interfaces";
 import PostItem from "components/posts/item";
@@ -14,8 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
-import { isObjectEmpty } from "utils/functions";
-import { useEffectOnce } from "react-use";
+import Layout from "../layouts/page-layout";
 
 interface Props {
   posts: Post[];
@@ -23,9 +22,14 @@ interface Props {
   total: number;
 }
 
+/**
+ * This is HomePage
+ *
+ * @returns {JSX.Element}
+ */
 const IndexPage = ({ posts, pages, total }: Props) => {
   const [s] = useQueryParam("s", withDefault(StringParam, ""));
-  const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
+  const [_, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
   const [items, setItems] = useState<Post[]>(posts);
   const [totalPages, setTotalPages] = useState<number>(pages);
   const [totalItems, setTotalItems] = useState<number>(total);

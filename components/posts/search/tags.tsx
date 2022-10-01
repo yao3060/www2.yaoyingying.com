@@ -15,7 +15,11 @@ export default function PostsSearchTags() {
   };
 
   const getData = async () => {
-    const response = await getTags({ order: "desc", orderby: "count" });
+    const response = await getTags({
+      order: "desc",
+      orderby: "count",
+      per_page: 20,
+    });
     setItems(response.data);
   };
 
@@ -42,7 +46,7 @@ export default function PostsSearchTags() {
   return (
     <div className="w-full flex mt-5">
       <span className="py-1.5 pr-2 font-bold">Tags:</span>
-      <div className="flex">
+      <div className="flex justify-start flex-wrap">
         {items
           ? items.map((item) => (
               <div className="form-control mr-2.5" key={item.id}>

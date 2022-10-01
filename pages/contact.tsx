@@ -11,7 +11,11 @@ const ContactPage = () => {
         <h1 className="text-4xl">Contact {count}</h1>
         <p>This is the contact page</p>
         <p>
-          <button className="btn btn-wide" onClick={() => setCount(count + 1)}>
+          <button
+            type="button"
+            className="btn btn-wide"
+            onClick={() => setCount(count + 1)}
+          >
             Wide
           </button>
         </p>

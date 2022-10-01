@@ -23,12 +23,14 @@ export default function PostsSearchCategories() {
       <select
         className="select select-bordered w-full max-w-xs"
         onChange={(e) =>
-          setFilter({ ...filter, categories: e.target.value, page: "1" })
+          setFilter({
+            ...filter,
+            categories: Number(e.target.value) ? e.target.value : undefined,
+            page: "1",
+          })
         }
       >
-        <option disabled value="0">
-          Categories
-        </option>
+        <option value="0">Categories</option>
         {items
           ? items.map((item) => (
               <option key={item.id} value={item.id}>

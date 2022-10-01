@@ -20,7 +20,7 @@ export default function TagsWidget() {
       <div className="">
         {items?.length
           ? items.map((item) => (
-              <Link href={`/tag/${item.slug}`}>
+              <Link key={item.id} href={`/tag/${item.slug}`}>
                 <a className="btn gap-2 btn-sm mr-5 mb-5">
                   {item.name}
                   <div className="badge">{item.count}</div>

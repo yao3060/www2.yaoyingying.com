@@ -1,3 +1,5 @@
+import React from "react";
+
 import "../styles/globals.scss";
 import { AppProps } from "next/app";
 import { NextAdapter } from "next-query-params";

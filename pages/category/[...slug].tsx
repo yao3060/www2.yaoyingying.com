@@ -1,15 +1,15 @@
-import Layout from "../../layouts/page-layout";
+import React from "react";
 import { GetServerSideProps } from "next";
 import { getCategories, getCategory } from "apis/categories";
 import { Category, Post } from "interfaces";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import last from "lodash/last";
 import InlineTerms from "components/posts/inline-terms";
 import Loading from "components/common/loading";
 import Pagination from "components/posts/pagination";
 import { getPosts } from "apis/posts";
 import PostItem from "components/posts/item";
+import Layout from "../../layouts/page-layout";
 
 export default function CategoryPage({ category }: { category: Category }) {
   const [childCats, setChildCats] = useState<Category[] | null>(null);
@@ -41,7 +41,7 @@ export default function CategoryPage({ category }: { category: Category }) {
   useEffect(() => {
     getChildCategories(category.id);
     getItems();
-  }, [category]);
+  }, [category, getItems]);
 
   return (
     <Layout title={`Category: ${category.name}`} description="">

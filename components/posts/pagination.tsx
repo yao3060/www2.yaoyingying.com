@@ -7,7 +7,7 @@ import { useEffectOnce } from "react-use";
 interface Props {
   total: number;
   pages: number;
-  siblings: number;
+  siblings?: number;
   className: string;
   handelChange: CallableFunction;
 }
@@ -15,13 +15,9 @@ interface Props {
 export default function Pagination({
   total,
   pages,
-  siblings = 0,
   className = "",
   handelChange,
 }: Props) {
-  if (pages <= 1) {
-    return <></>;
-  }
   const [current, setCurrent] = useState<number>(1);
   const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
   const paginationRange = usePagination(total, pages, 1, current);
@@ -45,6 +41,10 @@ export default function Pagination({
   const onPrevious = () => {
     onPageChanged(current - 1);
   };
+
+  if (pages <= 1) {
+    return <></>;
+  }
 
   return (
     <div className={`pagination py-10 flex justify-center ${className}`}>
