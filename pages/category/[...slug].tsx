@@ -2,46 +2,56 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { getCategories, getCategory } from "apis/categories";
 import { Category, Post } from "interfaces";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import last from "lodash/last";
 import InlineTerms from "components/posts/inline-terms";
 import Loading from "components/common/loading";
 import Pagination from "components/posts/pagination";
 import { getPosts } from "apis/posts";
 import PostItem from "components/posts/item";
-import Layout from "../../layouts/page-layout";
+import Layout from "layouts/page-layout";
+import { useQueryParam, withDefault, NumberParam } from "use-query-params";
 
 export default function CategoryPage({ category }: { category: Category }) {
   const [childCats, setChildCats] = useState<Category[] | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Post[]>([]);
+  const [page] = useQueryParam("page", withDefault(NumberParam, 1));
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(page);
 
-  const getChildCategories = async (parent: number) => {
-    const response = await getCategories({ parent });
+  const getChildCategories = useCallback(async () => {
+    const response = await getCategories({ parent: category.id });
     if (response && response.data) {
       setChildCats(response.data);
     }
-  };
+  }, [category.id]);
 
   const getItems = async () => {
+    console.log("currentPage:", currentPage);
     setIsLoading(true);
-    const response = await getPosts({ categories: [category.id.toString()] });
+    const response = await getPosts({
+      categories: [category.id.toString()],
+      page: currentPage.toString(),
+    });
     setItems(response.data);
     setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
     setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
     setIsLoading(false);
   };
 
-  const handelPageChange = (page: number) => {
-    console.log("page", page);
+  const handelPageChange = (p: number) => {
+    console.log("page:", p);
+    setCurrentPage(p);
   };
 
   useEffect(() => {
-    getChildCategories(category.id);
-    getItems();
-  }, [category, getItems]);
+    if (category.id) {
+      getChildCategories();
+      getItems();
+    }
+  }, [category, currentPage]);
 
   return (
     <Layout title={`Category: ${category.name}`} description="">
