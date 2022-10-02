@@ -4,7 +4,7 @@ import { getPosts } from "apis/posts";
 import { Post } from "../interfaces";
 import PostItem from "components/posts/item";
 import Head from "next/head";
-import { SITE_NAME, SITE_DESCRIPTION } from "../utils/constants";
+import { SITE_NAME, SITE_DESCRIPTION } from "utils/constants";
 import {
   useQueryParam,
   StringParam,
@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
-import Layout from "../layouts/page-layout";
+import Layout from "layouts/page-layout";
 
 interface Props {
   posts: Post[];
@@ -29,26 +29,29 @@ interface Props {
  */
 const IndexPage = ({ posts, pages, total }: Props) => {
   const [s] = useQueryParam("s", withDefault(StringParam, ""));
-  const [_, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
+  const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
   const [items, setItems] = useState<Post[]>(posts);
   const [totalPages, setTotalPages] = useState<number>(pages);
   const [totalItems, setTotalItems] = useState<number>(total);
   const [isLoading, setIsLoading] = useState(false);
 
+  const search = async () => {
+    setPage(null);
+    setIsLoading(true);
+    const response = await getPosts({
+      search: s,
+      page: `1`,
+    });
+    setItems(response.data);
+    setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
+    setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const search = async () => {
-      setPage(null);
-      setIsLoading(true);
-      const response = await getPosts({
-        search: s,
-        page: `1`,
-      });
-      setItems(response.data);
-      setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
-      setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
-      setIsLoading(false);
-    };
-    search();
+    if (s) {
+      search();
+    }
   }, [s]);
 
   const handelPageChange = async (page: number) => {
@@ -68,7 +71,7 @@ const IndexPage = ({ posts, pages, total }: Props) => {
     <Layout title="Home | Next.js + TypeScript Example">
       <Head>
         <title>
-          {SITE_NAME} - {SITE_DESCRIPTION}
+          {SITE_NAME} - Page:{page} - {SITE_DESCRIPTION}
         </title>
       </Head>
 
