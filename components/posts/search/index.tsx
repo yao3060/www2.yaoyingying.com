@@ -6,6 +6,7 @@ import PostsSearchTags from "./tags";
 import qs from "qs";
 import shallow from "zustand/shallow";
 import { useEffectOnce } from "react-use";
+import PostsSearchOrder from "./order";
 
 export default function PostsSearch() {
   const init = usePostStore((state) => state.init);
@@ -48,8 +49,9 @@ export default function PostsSearch() {
     <div>
       <h3 className="text-3xl font-bold">Advanced Search</h3>
       <div className="divider"></div>
-      <div className="advanced-search-form flex">
+      <div className="advanced-search-form flex items-center">
         <PostsSearchCategories />
+        <PostsSearchOrder />
         <PostsSearchKeyword />
       </div>
       <PostsSearchTags />

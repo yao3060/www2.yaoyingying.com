@@ -9,9 +9,6 @@ import shallow from "zustand/shallow";
 export default function PostsSearchCategories() {
   const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);
-  const [value, setValue] = useState<
-    { label: string; value: string } | undefined
-  >(undefined);
 
   const [categories] = useQueryParam(
     "categories",
@@ -43,7 +40,6 @@ export default function PostsSearchCategories() {
         value={categories?.toString()}
         onChange={(o) => {
           console.log(o);
-          setValue(o);
           setFilter({
             ...filter,
             categories: o && Number(o.value) ? o.value : undefined,

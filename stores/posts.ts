@@ -8,6 +8,7 @@ type Filter = {
   tags?: string[];
   categories?: string;
   page?: string;
+  order?: string;
 };
 
 interface Store {
