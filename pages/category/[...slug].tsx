@@ -11,6 +11,7 @@ import { getPosts } from "apis/posts";
 import PostItem from "components/posts/item";
 import Layout from "layouts/page-layout";
 import { useQueryParam, withDefault, NumberParam } from "use-query-params";
+import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 export default function CategoryPage({ category }: { category: Category }) {
   const [childCats, setChildCats] = useState<Category[] | null>(null);
@@ -19,7 +20,6 @@ export default function CategoryPage({ category }: { category: Category }) {
   const [page] = useQueryParam("page", withDefault(NumberParam, 1));
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(page);
 
   const getChildCategories = useCallback(async () => {
     const response = await getCategories({ parent: category.id });
@@ -28,13 +28,9 @@ export default function CategoryPage({ category }: { category: Category }) {
     }
   }, [category.id]);
 
-  const getItems = async () => {
-    console.log("currentPage:", currentPage);
+  const getItems = async (params: NextParsedUrlQuery) => {
     setIsLoading(true);
-    const response = await getPosts({
-      categories: [category.id.toString()],
-      page: currentPage.toString(),
-    });
+    const response = await getPosts(params);
     setItems(response.data);
     setTotalItems(Number(response.headers["x-wp-total"] ?? 0));
     setTotalPages(Number(response.headers["x-wp-totalpages"] ?? 1));
@@ -43,15 +39,17 @@ export default function CategoryPage({ category }: { category: Category }) {
 
   const handelPageChange = (p: number) => {
     console.log("page:", p);
-    setCurrentPage(p);
   };
 
   useEffect(() => {
     if (category.id) {
+      getItems({
+        categories: [category.id.toString()],
+        page: page.toString(),
+      });
       getChildCategories();
-      getItems();
     }
-  }, [category, currentPage]);
+  }, [category, page]);
 
   return (
     <Layout title={`Category: ${category.name}`} description="">

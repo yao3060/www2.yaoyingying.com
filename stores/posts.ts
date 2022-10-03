@@ -1,7 +1,7 @@
 import { getPosts } from "apis/posts";
 import { Post } from "interfaces";
 import create from "zustand";
-import { mountStoreDevtool } from "simple-zustand-devtools";
+import { devtools } from 'zustand/middleware'
 
 type Filter = {
   search?: string;
@@ -23,7 +23,7 @@ interface Store {
   pages: number;
 }
 
-const usePostStore = create<Store>((set, get) => ({
+const usePostStore = create<Store>()(devtools((set, get) => ({
   init: false,
   isLoading: false,
   filter: {
@@ -47,10 +47,6 @@ const usePostStore = create<Store>((set, get) => ({
   },
   setFilter: (filter: Filter) => set((state) => ({ ...state, filter })),
   setInit: (value: boolean) => set((state) => ({ ...state, init: value })),
-}));
-
-if (process.env.NODE_ENV === "development") {
-  mountStoreDevtool("PostStore", usePostStore);
-}
+})));
 
 export default usePostStore;
