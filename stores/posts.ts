@@ -15,6 +15,7 @@ interface Store {
   init: boolean;
   setInit: CallableFunction;
   isLoading: boolean;
+  setIsLoading: CallableFunction;
   filter: Filter;
   setFilter: (filter: Filter) => void;
 
@@ -37,11 +38,14 @@ const usePostStore = create<Store>()(
       posts: [],
       total: 0,
       pages: 1,
-      getItems: async () => {
-        set((state) => ({ ...state, isLoading: true }), false, {
-          type: "posts/getItems",
-          isLoading: true,
+      setIsLoading: (value: boolean) => {
+        set((state) => ({ ...state, isLoading: value }), false, {
+          type: "posts/setIsLoading",
+          value,
         });
+      },
+      getItems: async () => {
+        get().setIsLoading(true);
         const response = await getPosts(get().filter);
         set(
           (state) => ({
@@ -49,15 +53,14 @@ const usePostStore = create<Store>()(
             posts: response.data,
             total: Number(response.headers["x-wp-total"] ?? 0),
             pages: Number(response.headers["x-wp-totalpages"] ?? 1),
-            isLoading: false,
           }),
           false,
           {
             type: "posts/getItems",
             posts: response.data,
-            isLoading: false,
           }
         );
+        get().setIsLoading(false);
       },
       setFilter: (filter: Filter) =>
         set((state) => ({ ...state, filter }), false, {
@@ -67,7 +70,7 @@ const usePostStore = create<Store>()(
       setInit: (value: boolean) =>
         set((state) => ({ ...state, init: value }), false, {
           type: "posts/setInit",
-          init: value,
+          value,
         }),
     }),
     { name: "PostStore", serialize: { options: true } }

@@ -8,7 +8,6 @@ import Loading from "components/common/loading";
 import PostsSearch from "components/posts/search";
 import usePostStore from "stores/posts";
 import shallow from "zustand/shallow";
-import useBearStore from "stores/bearer";
 
 const PostsPage = () => {
   const filter = usePostStore((state) => state.filter, shallow);
@@ -17,8 +16,6 @@ const PostsPage = () => {
   const total = usePostStore((state) => state.total);
   const pages = usePostStore((state) => state.pages);
   const isLoading = usePostStore((state) => state.isLoading);
-
-  // const bearsStore = useBearStore();
 
   const handelPageChange = async (page: number) => {
     setFilter({ ...filter, page: page.toString() });
@@ -33,14 +30,6 @@ const PostsPage = () => {
       </Head>
 
       <PostsSearch />
-
-      {/* <p>
-        <span>Bear: {bearsStore.bears}</span>
-
-        <button className="btn ml-5" onClick={() => bearsStore.increase(1)}>
-          increase
-        </button>
-      </p> */}
 
       <div className="articles relative min-h-[500px]">
         {isLoading ? (
