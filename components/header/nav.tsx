@@ -24,6 +24,16 @@ const Nav = () => {
             <a className="px-5 block tracking-wide leading-[75px]">Contact</a>
           </Link>
         </li>
+        <li>
+          <Link href="https://github.com/yao3060/yaoyingying.com">
+            <a
+              className="px-5 block tracking-wide leading-[75px]"
+              target="_blank"
+            >
+              Github
+            </a>
+          </Link>
+        </li>
       </ul>
     </nav>
   );
