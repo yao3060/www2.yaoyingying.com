@@ -1,5 +1,5 @@
 import { getCategories } from "apis/categories";
-import UISelect from "components/common/ui-select";
+import UISelect, { Option } from "components/common/ui-select";
 import { Category } from "interfaces";
 import React, { useEffect, useState } from "react";
 import usePostStore from "stores/posts";
@@ -10,7 +10,7 @@ export default function PostsSearchCategories() {
   const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);
 
-  const [categories] = useQueryParam(
+  const [categories, setCategories] = useQueryParam(
     "categories",
     withDefault(NumberParam, undefined)
   );
@@ -21,28 +21,42 @@ export default function PostsSearchCategories() {
     setItems(response.data);
   };
 
-  const getSelectOptions = (items: Category[] | []) => {
+  const getSelectOptions = (items: Category[] | []): Option[] => {
     return items.map((item) => ({
       label: item.name,
       value: `${item.id}`,
     }));
   };
 
+  const [value, setValue] = useState<Option | undefined>(undefined);
+
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (categories && items) {
+      const cat = items.find((item) => item.id === categories);
+      if (cat)
+        setValue({
+          label: cat.name,
+          value: cat.id,
+        });
+    }
+  }, [categories, items]);
 
   return (
     <>
       <UISelect
         className="form-control  mr-5"
         options={getSelectOptions(items)}
-        value={categories?.toString()}
+        value={value}
         onChange={(o) => {
-          console.log(o);
+          setCategories(o === undefined ? null : parseInt(o?.value as string));
+          setValue(o);
           setFilter({
             ...filter,
-            categories: o && Number(o.value) ? o.value : undefined,
+            categories: o === undefined ? undefined : `${o.value}`,
             page: "1",
           });
         }}
