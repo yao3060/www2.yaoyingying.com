@@ -36,3 +36,33 @@ export interface Tag {
   slug: string;
   count?: number;
 }
+
+export interface Product {
+  id: number;
+  name: string;
+  slug: string;
+  date_modified: string;
+  type: "variable" | "simple";
+  featured: boolean;
+  description: string;
+  short_description: string;
+  sku: string;
+  price: string;
+  regular_price: string;
+  sale_price: string;
+  price_html: string;
+  categories: {
+    id: number;
+    name: string;
+    slug: string;
+  }[];
+  images: { id: number; name: string; src: string }[];
+  attributes: {
+    id: number;
+    name: string;
+    position: number;
+    visible: boolean;
+    variation: boolean;
+    options: string[];
+  }[];
+}

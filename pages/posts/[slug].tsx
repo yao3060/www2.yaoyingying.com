@@ -7,10 +7,6 @@ import { SITE_NAME, IMAGE_PLACEHOLDER } from "../../utils/constants";
 import Layout from "../../layouts/page-layout";
 
 export default function PostPage({ post }: { post: Post }) {
-  console.log("post:", post);
-
-  const router = useRouter();
-
   return (
     <Layout>
       <Head>
