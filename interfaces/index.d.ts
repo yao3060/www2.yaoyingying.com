@@ -48,6 +48,7 @@ export interface Product {
   short_description: string;
   sku: string;
   price: string;
+  stock_status: string;
   regular_price: string;
   sale_price: string;
   price_html: string;
@@ -64,5 +65,10 @@ export interface Product {
     visible: boolean;
     variation: boolean;
     options: string[];
+  }[];
+  default_attributes: {
+    id: number;
+    name: string;
+    option: string;
   }[];
 }

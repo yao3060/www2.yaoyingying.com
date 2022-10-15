@@ -5,6 +5,8 @@ import { SITE_NAME } from "utils/constants";
 import { GetServerSideProps } from "next";
 import { Product } from "interfaces";
 import ProductGallery from "components/product/gallery";
+import ProductAttributes from "components/product/attributes";
+import ProductDetails from "components/product/details";
 
 interface Props {
   product: Product;
@@ -18,21 +20,32 @@ export default function ProductPage({ product }: Props) {
           {product.name} - {SITE_NAME}
         </title>
       </Head>
-      <article className="flex">
-        <div className="w-1/2 pr-10">
-          <ProductGallery images={product.images} />
-        </div>
-        <div className="w-1/2">
-          <header>
+      <article className="pb-10">
+        <header className="flex">
+          <div className="w-1/2 pr-10">
+            <ProductGallery images={product.images} />
+          </div>
+          <div className="w-1/2">
             <h1 className="entry-title mb-2.5 text-3xl leading-normal">
               {product.name}
             </h1>
-          </header>
-          <div
-            className="entry-content"
-            dangerouslySetInnerHTML={{ __html: product.short_description }}
-          ></div>
-        </div>
+            <div className="entry-content"></div>
+            <p
+              className="text-3xl tracking-tight text-gray-900"
+              dangerouslySetInnerHTML={{ __html: product.price_html }}
+            ></p>
+
+            <ProductAttributes product={product} />
+
+            <div
+              className="entry-content"
+              dangerouslySetInnerHTML={{ __html: product.short_description }}
+            ></div>
+          </div>
+        </header>
+        <section>
+          <ProductDetails product={product} />
+        </section>
       </article>
     </Layout>
   );
