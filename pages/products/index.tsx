@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "layouts/one-column-layout";
 import Head from "next/head";
-import { SITE_NAME } from "../../utils/constants";
+import { SITE_NAME } from "utils/constants";
 import { Product } from "interfaces";
 import ProductItem from "components/product/item";
 

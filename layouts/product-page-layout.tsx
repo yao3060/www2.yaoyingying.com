@@ -11,7 +11,11 @@ type Props = {
   description?: string;
 };
 
-export default function PageLayout({ children, title, description }: Props) {
+export default function ProductPageLayout({
+  children,
+  title,
+  description,
+}: Props) {
   return (
     <>
       <Head>
@@ -31,7 +35,7 @@ export default function PageLayout({ children, title, description }: Props) {
               {children}
             </div>
             <div id="secondary" className="w-1/4">
-              <Sidebar />
+              <h3>Product page Sidebar</h3>
             </div>
           </div>
         </div>

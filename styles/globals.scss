@@ -46,3 +46,14 @@ img.emoji {
 .wp-block-code {
   @apply bg-gray-200 border border-gray-300 shadow-inner p-5 whitespace-pre-line mb-5;
 }
+
+.swiper-slide {
+  border: 1px solid #fff;
+  img {
+    margin: auto;
+  }
+}
+.swiper-slide-thumb-active {
+  border: 1px solid #ccc;
+  @apply rounded-md;
+}

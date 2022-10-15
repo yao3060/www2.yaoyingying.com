@@ -1,10 +1,10 @@
+import React from "react";
 import { getPost } from "apis/posts";
 import { Post } from "interfaces";
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
-import { SITE_NAME, IMAGE_PLACEHOLDER } from "../../utils/constants";
-import Layout from "../../layouts/page-layout";
+import { SITE_NAME, IMAGE_PLACEHOLDER } from "utils/constants";
+import Layout from "layouts/page-layout";
 
 export default function PostPage({ post }: { post: Post }) {
   return (
