@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "layouts/product-page-layout";
+import Layout from "layouts/one-column-layout";
 import Head from "next/head";
 import { SITE_NAME } from "utils/constants";
 import { GetServerSideProps } from "next";
@@ -29,9 +29,8 @@ export default function ProductPage({ product }: Props) {
             <h1 className="entry-title mb-2.5 text-3xl leading-normal">
               {product.name}
             </h1>
-            <div className="entry-content"></div>
             <p
-              className="text-3xl tracking-tight text-gray-900"
+              className="text-2xl tracking-tight mb-5"
               dangerouslySetInnerHTML={{ __html: product.price_html }}
             ></p>
 

@@ -72,3 +72,12 @@ export interface Product {
     option: string;
   }[];
 }
+
+export interface Variation
+  extends Pick<
+    Product,
+    "id" | "sku" | "price" | "regular_price" | "stock_status"
+  > {
+  image: Product["images"][0];
+  attributes: Product["default_attributes"];
+}
