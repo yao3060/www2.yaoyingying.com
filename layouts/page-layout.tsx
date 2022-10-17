@@ -16,6 +16,7 @@ export default function PageLayout({ children, title, description }: Props) {
     <>
       <Head>
         <title>{title}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
       <Header />

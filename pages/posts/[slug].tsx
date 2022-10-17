@@ -5,8 +5,32 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { SITE_NAME, IMAGE_PLACEHOLDER } from "utils/constants";
 import Layout from "layouts/page-layout";
+import useSWR, { unstable_serialize } from "swr";
 
-export default function PostPage({ post }: { post: Post }) {
+const API = "getPost";
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const slug = params?.slug as string;
+  const response = await getPost(slug);
+
+  return {
+    props: {
+      slug,
+      fallback: {
+        [unstable_serialize([API, slug])]: response.data[0] ?? [],
+      },
+    },
+  };
+};
+
+const fetcher = async (...url: string[]) => (await getPost(url[1])).data[0];
+
+export default function PostPage({ slug }: { slug: string }) {
+  const { data: post, error } = useSWR<Post>([API, slug], fetcher);
+
+  if (error) return "An error has occurred.";
+  if (!post) return "Loading...";
+
   return (
     <Layout>
       <Head>
@@ -37,13 +61,3 @@ export default function PostPage({ post }: { post: Post }) {
     </Layout>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const response = await getPost(params?.slug as string);
-
-  return {
-    props: {
-      post: response.data[0] ?? [],
-    },
-  };
-};

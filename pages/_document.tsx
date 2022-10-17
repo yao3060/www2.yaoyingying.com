@@ -7,7 +7,6 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link
           rel="stylesheet"
           id="wp-block-library-css"
