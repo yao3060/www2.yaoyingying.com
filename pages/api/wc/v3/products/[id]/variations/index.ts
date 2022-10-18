@@ -9,7 +9,7 @@ export default async function handler(
     query: { id },
   } = req;
 
-  console.log(req.query);
+  console.log("req.query:", req.query);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const woo = useWoocommerce();
