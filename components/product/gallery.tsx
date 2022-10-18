@@ -55,7 +55,7 @@ export default function ProductGallery({ images }: Props) {
         ))}
       </Swiper>
       <Swiper
-        onSwiper={setThumbsSwiper}
+        onSwiper={() => setThumbsSwiper}
         spaceBetween={10}
         slidesPerView={4}
         freeMode={true}
