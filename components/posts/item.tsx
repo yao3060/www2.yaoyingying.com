@@ -7,7 +7,10 @@ const PostItem = ({ post }: { post: Post }) => {
   const featuredMedia = post.x_featured_media_medium ?? IMAGE_PLACEHOLDER;
 
   return (
-    <article id={`post-${post.id}`} className="flex gap-4 border-b py-5">
+    <article
+      id={`post-${post.id}`}
+      className="flex flex-auto gap-4 border-b py-5"
+    >
       <div className="feature-image w-[300px] ">
         <ItemImage
           title={post.title.rendered}
@@ -17,7 +20,7 @@ const PostItem = ({ post }: { post: Post }) => {
           height={150}
         />
       </div>
-      <div className="content">
+      <div className="content flex-grow">
         <div className="meta flex justify-between text-xs tracking-widest mb-2.5">
           <div className="text-[#0275d8] uppercase">{post.x_categories}</div>
           <div className="post-date">{post.x_date}</div>
