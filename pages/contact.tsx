@@ -2,8 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Layout from "layouts/one-column-layout";
 import { RootState, Dispatch } from "stores/rematch";
+import classNames from "classnames";
 
 const ContactPage = () => {
+  const isLoading = useSelector(
+    (rootState: RootState) => rootState.loading.models.counter
+  );
   const counterState = useSelector((state: RootState) => state.counter);
   const dispatch = useDispatch<Dispatch>();
 
@@ -27,7 +31,9 @@ const ContactPage = () => {
 
           <button
             type="button"
-            className="btn "
+            className={classNames("btn", {
+              "loading  btn-disabled": isLoading,
+            })}
             onClick={() => dispatch.counter.incrementAsync(5)}
           >
             Async Increment 5
