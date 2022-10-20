@@ -40,6 +40,11 @@ const Nav = () => {
               <a>Swiper</a>
             </Link>
           </li>
+          <li>
+            <Link href="/packages/mega-menu">
+              <a>Mega Menu</a>
+            </Link>
+          </li>
         </ul>
       </li>
       <li>
