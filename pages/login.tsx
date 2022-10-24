@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
 import Layout from "layouts/one-column-layout";
 import { useRouter } from "next/router";
 
 const LoginPage = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+
+  const signIn = () => {
+    //
+  };
 
   useEffect(() => {
-    if (session) {
+    if (false) {
       router.push("/profile");
     }
-  }, [session, router]);
+  }, []);
 
   return (
     <Layout title="Login">

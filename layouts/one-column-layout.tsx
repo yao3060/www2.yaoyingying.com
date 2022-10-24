@@ -6,7 +6,7 @@ import Header from "../components/header";
 import PageHeader from "components/page-header";
 
 type Props = {
-  fullWidth: boolean;
+  fullWidth?: boolean;
   children?: ReactNode;
   title?: string;
   description?: string;

@@ -1,9 +1,11 @@
 import React from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Layout from "layouts/one-column-layout";
 
 export default function ProfilePage() {
-  const { data: session } = useSession();
+  const signOut = () => {
+    //
+  };
+
   return (
     <Layout title="Profile">
       <div>
@@ -11,7 +13,6 @@ export default function ProfilePage() {
         <button className="btn" onClick={() => signOut()}>
           signOut
         </button>
-        <pre>{JSON.stringify(session)}</pre>
       </div>
     </Layout>
   );
