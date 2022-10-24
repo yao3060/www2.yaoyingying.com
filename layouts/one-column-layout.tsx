@@ -4,36 +4,42 @@ import Head from "next/head";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import PageHeader from "components/page-header";
-import Sidebar from "components/sidebar";
 
 type Props = {
+  fullWidth: boolean;
   children?: ReactNode;
   title?: string;
   description?: string;
+  bgImage?: string;
 };
 
 export default function OneColumnLayout({
+  fullWidth = false,
   children,
   title,
   description,
+  bgImage,
 }: Props) {
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Header />
-      <PageHeader title={title} description={description} />
+      <PageHeader title={title} description={description} bgImage={bgImage} />
 
       <main id="content">
-        <div className="container m-auto">
-          <div className="flex justify-between w-full">
-            <div id="primary" className="w-full pt-5 ">
-              {children}
+        {fullWidth ? (
+          children
+        ) : (
+          <div className="container m-auto">
+            <div className="flex justify-between w-full">
+              <div id="primary" className="w-full pt-5 ">
+                {children}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
       <Footer />
     </>

@@ -3,28 +3,28 @@ import Head from "next/head";
 import Footer from "../components/footer";
 import Header from "../components/header";
 import PageHeader from "components/page-header";
-import Sidebar from "components/sidebar";
 
 type Props = {
   children?: ReactNode;
   title?: string;
   description?: string;
+  bgImage?: string;
 };
 
 export default function ProductPageLayout({
   children,
   title,
   description,
+  bgImage,
 }: Props) {
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
       <Header />
-      <PageHeader title={title} description={description} />
+      <PageHeader title={title} description={description} bg-image={bgImage} />
 
       <main id="content">
         <div className="container m-auto">

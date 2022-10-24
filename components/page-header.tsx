@@ -1,17 +1,42 @@
+import classNames from "classnames";
+import React, { CSSProperties } from "react";
+
 const PageHeader = ({
   title,
   description,
+  bgImage,
 }: {
   title?: string;
   description?: string;
+  bgImage?: string;
 }) => {
-  if (!title) {
-    return <></>;
+  const style: CSSProperties = {};
+  if (bgImage) {
+    style.backgroundImage = `url(${bgImage})`;
+    style.backgroundRepeat = "no-repeat";
+    style.backgroundSize = "cover";
   }
+
+  if (!title) {
+    return null;
+  }
+
   return (
-    <div className="page-header py-8 bg-[#f8f9f9] border-t border-b border-[#e9e9e9]">
+    <div
+      className={classNames(
+        "page-header py-8 bg-[#f8f9f9] border-t border-b border-[#e9e9e9]",
+        { "py-36": bgImage }
+      )}
+      style={style}
+    >
       <div className="container m-auto">
-        <h1 className="entry-title">{title}</h1>
+        <h1
+          className={classNames("entry-title", {
+            "text-4xl text-white text-center": bgImage,
+          })}
+        >
+          {title}
+        </h1>
         {description ? (
           <div className="description text-gray-500 pt-2.5">{description}</div>
         ) : (

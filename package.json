@@ -20,6 +20,8 @@
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "dayjs": "^1.11.5",
+    "framer-motion": "^7.6.1",
+    "iron-session": "^6.3.1",
     "lodash": "^4.17.21",
     "next": "12.3.1",
     "next-query-params": "^4.0.0",

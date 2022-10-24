@@ -1,23 +1,26 @@
-import CommonSwiper from "components/common/swiper";
-import Link from "next/link";
 import React from "react";
 import Layout from "layouts/one-column-layout";
+import Image18 from "assets/images/18.jpg";
+import { motion } from "framer-motion";
+
+import Welcome from "components/about/welcome";
+import Grids from "components/about/grids";
 
 const AboutPage = () => {
   return (
-    <Layout title="About | Next.js + TypeScript Example">
-      <CommonSwiper />
-
-      <hr className="mb-96" />
-
-      <h1>About {}</h1>
-      <p>This is the about page</p>
-      <p></p>
-      <p>
-        <Link href="/">
-          <a>Go home</a>
-        </Link>
-      </p>
+    <Layout
+      fullWidth={true}
+      title="About | Next.js + TypeScript Page"
+      bgImage={Image18.src}
+    >
+      <Welcome />
+      <motion.div
+        initial={{ opacity: 0, translateY: "-2rem" }}
+        whileInView={{ opacity: 1, translateY: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <Grids />
+      </motion.div>
     </Layout>
   );
 };
