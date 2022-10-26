@@ -22,28 +22,29 @@ const PageHeader = ({
   }
 
   return (
-    <div
-      className={classNames(
-        "page-header py-8 bg-[#f8f9f9] border-t border-b border-[#e9e9e9]",
-        { "py-36": bgImage }
-      )}
-      style={style}
-    >
-      <div className="container m-auto">
-        <h1
-          className={classNames("entry-title", {
-            "text-4xl text-white text-center": bgImage,
-          })}
-        >
-          {title}
-        </h1>
-        {description ? (
-          <div className="description text-gray-500 pt-2.5">{description}</div>
-        ) : (
-          ""
-        )}
+    <>
+      <div
+        className={classNames("hero bg-base-200 py-10", { "py-36": bgImage })}
+        style={style}
+      >
+        <div className="container m-auto">
+          <h1
+            className={classNames("text-2xl", {
+              "text-4xl text-white text-center": bgImage,
+            })}
+          >
+            {title}
+          </h1>
+          {description ? (
+            <div className="description text-gray-500 pt-2.5">
+              {description}
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

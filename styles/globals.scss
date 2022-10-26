@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+[data-theme="dark"] {
+  --background: black;
+  --foreground: white;
+}
+
 body {
-  @apply pt-[75px];
+  @apply pt-[75px] min-h-screen;
 }
 
 img.wp-smiley,

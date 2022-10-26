@@ -1,6 +1,6 @@
 import { getTags } from "apis/categories";
 import { Category } from "interfaces";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import usePostStore from "stores/posts";
 import shallow from "zustand/shallow";
 

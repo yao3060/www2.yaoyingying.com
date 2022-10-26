@@ -92,14 +92,13 @@ const IndexPage = ({
   };
 
   return (
-    <Layout title="Home | Next.js + TypeScript Example">
+    <Layout title="Next.js + WordPress = Headless CMS">
       <Head>
         <title>
           {SITE_NAME} - Page:{page} - {SITE_DESCRIPTION}
         </title>
       </Head>
-
-      <div className="articles relative min-h-[500px]">
+      <div className="articles relative min-h-min">
         {isLoading ? (
           <Loading />
         ) : items.length ? (
