@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 import { getPosts } from "apis/posts";
 import { Post } from "../interfaces";
@@ -16,18 +16,42 @@ import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
 import Layout from "layouts/page-layout";
 
-interface Props {
+interface Data {
   posts: Post[];
   pages: number;
   total: number;
 }
+
+export const getServerSideProps: GetServerSideProps<Data> = async ({
+  query,
+  res,
+}) => {
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=60, stale-while-revalidate=59"
+  );
+
+  const response = await getPosts(query);
+
+  return {
+    props: {
+      posts: response.data,
+      total: Number(response.headers["x-wp-total"] ?? 0),
+      pages: Number(response.headers["x-wp-totalpages"] ?? 1),
+    },
+  };
+};
 
 /**
  * This is HomePage
  *
  * @returns {JSX.Element}
  */
-const IndexPage = ({ posts, pages, total }: Props) => {
+const IndexPage = ({
+  posts,
+  pages,
+  total,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [s] = useQueryParam("s", withDefault(StringParam, ""));
   const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
   const [items, setItems] = useState<Post[]>(posts);
@@ -101,15 +125,3 @@ const IndexPage = ({ posts, pages, total }: Props) => {
 };
 
 export default IndexPage;
-
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const response = await getPosts(query);
-
-  return {
-    props: {
-      posts: response.data,
-      total: Number(response.headers["x-wp-total"] ?? 0),
-      pages: Number(response.headers["x-wp-totalpages"] ?? 1),
-    },
-  };
-};

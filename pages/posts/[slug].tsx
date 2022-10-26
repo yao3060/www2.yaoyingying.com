@@ -42,21 +42,15 @@ export default function PostPage({ slug }: { slug: string }) {
           content={post.x_featured_media_medium ?? IMAGE_PLACEHOLDER}
         />
       </Head>
-      <article>
+      <article className="prose">
         <header>
-          <h1
-            className="entry-title mb-2.5 text-3xl leading-normal"
-            dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-          ></h1>
+          <h1 dangerouslySetInnerHTML={{ __html: post.title.rendered }}></h1>
           <div className="entry-meta text-xs uppercase tracking-widest border-b border-[#e9e9e9] pb-[30px] mb-[30px]">
             <span className="posted-on">Posted on {post.x_date}</span>
             <span className="byline pl-1">BY {post.x_author}</span>
           </div>
         </header>
-        <div
-          className="entry-content"
-          dangerouslySetInnerHTML={{ __html: post.content.rendered }}
-        ></div>
+        <div dangerouslySetInnerHTML={{ __html: post.content.rendered }}></div>
       </article>
     </Layout>
   );
