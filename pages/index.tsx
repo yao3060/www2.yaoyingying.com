@@ -98,7 +98,7 @@ const IndexPage = ({
           {SITE_NAME} - Page:{page} - {SITE_DESCRIPTION}
         </title>
       </Head>
-      <div className="articles relative min-h-min">
+      <div className="articles relative">
         {isLoading ? (
           <Loading />
         ) : items.length ? (
@@ -108,9 +108,7 @@ const IndexPage = ({
         )}
       </div>
 
-      {isLoading ? (
-        ""
-      ) : (
+      {!isLoading && (
         <Pagination
           total={totalItems}
           pages={totalPages}

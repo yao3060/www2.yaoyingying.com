@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-[data-theme="dark"] {
-  --background: black;
-  --foreground: white;
+[data-theme="dark"] .btn-test {
+  border-width: 2px;
+  border-color: black;
 }
 
 body {
-  @apply pt-[75px] min-h-screen;
+  @apply pt-[75px] min-h-full;
 }
 
 img.wp-smiley,
