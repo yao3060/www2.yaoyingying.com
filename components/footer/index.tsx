@@ -17,14 +17,14 @@ const Footer = () => {
     <footer
       ref={intersectionRef}
       className={classNames({
-        "w-full bg-[#111] ": true,
-        "fixed bottom-0 transition ease-in-out duration-1000": fixedFooter,
+        "footer bg-neutral text-neutral-content": true,
+        "fixed bottom-0": fixedFooter,
       })}
     >
       <div className="container relative m-auto py-9">
         {!fixedFooter && (
           <a
-            className="back-to-top -rotate-45 block cursor-pointer absolute right-0 rounded-tr-2xl -top-6 text-gray-300 bg-[#111] text-2xl font-thin w-12 h-12 text-center"
+            className="back-to-top -rotate-45 block cursor-pointer absolute right-0 rounded-tr-2xl -top-6 text-neutral-content bg-neutral text-2xl font-thin w-12 h-12 text-center"
             title="Back To Top"
           >
             <FaAngleDoubleUp

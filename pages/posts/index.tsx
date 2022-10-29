@@ -31,7 +31,7 @@ const PostsPage = () => {
 
       <PostsSearch />
 
-      <div className="articles relative min-h-[500px]">
+      <div className="articles relative min-h-screen">
         {isLoading ? (
           <Loading />
         ) : items.length ? (
