@@ -1,8 +1,8 @@
 import { usePagination, DOTS } from "hooks/usePagination";
 import { useState } from "react";
 import classNames from "classnames";
-import { useQueryParam, NumberParam, withDefault } from "use-query-params";
-import { useEffectOnce } from "react-use";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface Props {
   total: number;
@@ -18,19 +18,29 @@ export default function Pagination({
   className = "",
   handelChange,
 }: Props) {
+  const router = useRouter();
+
   const [current, setCurrent] = useState<number>(1);
-  const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
+  const [page, setPage] = useState<number>(
+    router.query.page !== undefined ? parseInt(router.query.page as string) : 1
+  );
   const paginationRange = usePagination(total, pages, 1, current);
 
-  useEffectOnce(() => {
+  useEffect(() => {
     if (current !== page) {
       setCurrent(page);
     }
-  });
+  }, []);
 
   const onPageChanged = (page: number) => {
     setPage(page);
     setCurrent(page);
+    router.query.page = page.toString();
+    console.log("page:", page, router);
+    router.push({
+      pathname: router.route,
+      query: router.query,
+    });
     handelChange(page);
   };
 
@@ -43,7 +53,7 @@ export default function Pagination({
   };
 
   if (pages <= 1) {
-    return <></>;
+    return null;
   }
 
   return (

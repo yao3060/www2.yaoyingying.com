@@ -29,7 +29,7 @@ const usePostStore = create<Store>()(
   devtools(
     (set, get) => ({
       init: false,
-      isLoading: false,
+      isLoading: true,
       filter: {
         search: undefined,
         tags: [],

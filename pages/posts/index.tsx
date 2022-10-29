@@ -1,7 +1,7 @@
-import Layout from "../../layouts/one-column-layout";
+import Layout from "layouts/one-column-layout";
 import PostItem from "components/posts/item";
 import Head from "next/head";
-import { SITE_NAME, SITE_DESCRIPTION } from "../../utils/constants";
+import { SITE_NAME, SITE_DESCRIPTION } from "utils/constants";
 import React from "react";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";

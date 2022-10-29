@@ -31,3 +31,5 @@ yarn-error.log*
 .env.production.local
 
 rest.http
+.idea
+*.back.tsx

@@ -3,17 +3,16 @@ import UISelect, { Option } from "components/common/ui-select";
 import { Category } from "interfaces";
 import React, { useEffect, useState } from "react";
 import usePostStore from "stores/posts";
-import { useQueryParam, withDefault, NumberParam } from "use-query-params";
+import { useRouter } from "next/router";
 import shallow from "zustand/shallow";
 
 export default function PostsSearchCategories() {
+  const router = useRouter();
+
+  const { categories } = router.query;
+
   const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);
-
-  const [categories, setCategories] = useQueryParam(
-    "categories",
-    withDefault(NumberParam, undefined)
-  );
 
   const [items, setItems] = useState<Category[] | []>([]);
   const getData = async () => {
@@ -30,36 +29,40 @@ export default function PostsSearchCategories() {
 
   const [value, setValue] = useState<Option | undefined>(undefined);
 
+  const handelChange = (o: Option | undefined) => {
+    setValue(o);
+    setFilter({
+      ...filter,
+      categories: o === undefined ? undefined : `${o.value}`,
+      page: "1",
+    });
+  };
+
   useEffect(() => {
     getData();
   }, []);
 
   useEffect(() => {
+    console.log("cats:", categories, items);
     if (categories && items) {
-      const cat = items.find((item) => item.id === categories);
+      const cat = items.find(
+        (item) => item.id === parseInt(categories as string)
+      );
       if (cat)
         setValue({
           label: cat.name,
           value: cat.id,
         });
     }
-  }, [categories, items]);
+  }, [items]);
 
   return (
     <>
       <UISelect
-        className="form-control  mr-5"
+        className="form-control mr-5"
         options={getSelectOptions(items)}
         value={value}
-        onChange={(o) => {
-          setCategories(o === undefined ? null : parseInt(o?.value as string));
-          setValue(o);
-          setFilter({
-            ...filter,
-            categories: o === undefined ? undefined : `${o.value}`,
-            page: "1",
-          });
-        }}
+        onChange={(o) => handelChange(o)}
       />
     </>
   );

@@ -10,14 +10,16 @@ import Pagination from "components/posts/pagination";
 import { getPosts } from "apis/posts";
 import PostItem from "components/posts/item";
 import Layout from "layouts/page-layout";
-import { useQueryParam, withDefault, NumberParam } from "use-query-params";
+import { useRouter } from "next/router";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 export default function CategoryPage({ category }: { category: Category }) {
+  const router = useRouter();
+  const { page } = router.query;
+
   const [childCats, setChildCats] = useState<Category[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Post[]>([]);
-  const [page] = useQueryParam("page", withDefault(NumberParam, 1));
   const [totalPages, setTotalPages] = useState<number>(1);
   const [totalItems, setTotalItems] = useState<number>(0);
 
@@ -45,7 +47,7 @@ export default function CategoryPage({ category }: { category: Category }) {
     if (category.id) {
       getItems({
         categories: [category.id.toString()],
-        page: page.toString(),
+        page: page,
       });
       getChildCategories();
     }

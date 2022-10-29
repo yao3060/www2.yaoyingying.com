@@ -7,8 +7,8 @@
   border-color: black;
 }
 
-body {
-  @apply pt-[75px] min-h-full;
+#__next {
+  @apply pt-[75px] min-h-screen;
 }
 
 img.wp-smiley,

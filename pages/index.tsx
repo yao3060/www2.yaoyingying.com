@@ -1,17 +1,11 @@
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-
+import { SITE_NAME, SITE_DESCRIPTION } from "utils/constants";
 import { getPosts } from "apis/posts";
 import { Post } from "../interfaces";
 import PostItem from "components/posts/item";
 import Head from "next/head";
-import { SITE_NAME, SITE_DESCRIPTION } from "utils/constants";
-import {
-  useQueryParam,
-  StringParam,
-  NumberParam,
-  withDefault,
-} from "use-query-params";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Pagination from "components/posts/pagination";
 import Loading from "components/common/loading";
 import Layout from "layouts/page-layout";
@@ -52,15 +46,14 @@ const IndexPage = ({
   pages,
   total,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const [s] = useQueryParam("s", withDefault(StringParam, ""));
-  const [page, setPage] = useQueryParam("page", withDefault(NumberParam, 1));
+  const router = useRouter();
+  const { s, page } = router.query;
   const [items, setItems] = useState<Post[]>(posts);
   const [totalPages, setTotalPages] = useState<number>(pages);
   const [totalItems, setTotalItems] = useState<number>(total);
   const [isLoading, setIsLoading] = useState(false);
 
   const search = async () => {
-    setPage(null);
     setIsLoading(true);
     const response = await getPosts({
       search: s,
@@ -79,7 +72,7 @@ const IndexPage = ({
   }, [s]);
 
   const handelPageChange = async (page: number) => {
-    console.log("page", page);
+    console.log("search keyword with page", s, page);
     setIsLoading(true);
     const response = await getPosts({
       search: s,

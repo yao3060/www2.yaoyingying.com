@@ -32,18 +32,13 @@ export default function PostsSearch() {
   }, [filter, init]);
 
   // restore query strings
-  useEffectOnce(() => {
-    // window.location.search
-    console.log(
-      "window.location.search:",
-      qs.parse(window.location.search, { ignoreQueryPrefix: true })
-    );
+  useEffect(() => {
     setFilter({
       ...filter,
       ...qs.parse(window.location.search, { ignoreQueryPrefix: true }),
     });
     setInit(true);
-  });
+  }, []);
 
   return (
     <div>
