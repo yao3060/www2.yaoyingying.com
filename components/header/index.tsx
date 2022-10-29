@@ -1,6 +1,7 @@
 import Logo from "./logo";
 import Nav from "./nav";
 import ThemeMode from "./theme-mode";
+import UserMenu from "./user-menu";
 
 const Header = () => {
   return (
@@ -12,6 +13,7 @@ const Header = () => {
         <div className="flex">
           <Nav />
           <ThemeMode className="ml-5 h-5" size={5} />
+          <UserMenu />
         </div>
       </div>
     </header>
