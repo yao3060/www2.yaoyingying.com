@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useAuthStore from "stores/auth";
 
 function Icon() {
@@ -17,9 +17,18 @@ function Icon() {
 
 export default function UserMenu() {
   const token = useAuthStore((state) => state.token);
+  const [init, setInit] = useState(false);
 
   function Logout() {
     console.log("Logout");
+  }
+
+  useEffect(() => {
+    setInit(true);
+  }, []);
+
+  if (!init) {
+    return null;
   }
 
   if (!token) {
