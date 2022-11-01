@@ -1,42 +1,42 @@
-import React, { useEffect, useRef, FormEvent, useState } from "react";
+import React, { useRef, FormEvent, useState } from "react";
 import Layout from "layouts/one-column-layout";
-import { useRouter } from "next/router";
-import useAuthStore from "stores/auth";
-import { Login } from "apis/user";
+import useUser from "hooks/useUser";
+import fetchJson from "utils/fetchJson";
 
 const LoginPage = () => {
-  const router = useRouter();
+  // here we just check if user is already logged in and redirect to profile
+  const { mutateUser } = useUser({
+    redirectTo: "/profile",
+    redirectIfFound: true,
+  });
+
   const formRef = useRef<HTMLFormElement | null>(null);
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const [processing, setProcessing] = useState(false);
 
-  const token = useAuthStore((state) => state.token);
-  const setLoginData = useAuthStore((state) => state.setLoginData);
-
   const signIn = async (event: FormEvent) => {
     event.preventDefault();
     setProcessing(true);
+
     try {
-      const res = await Login({
-        username: usernameRef.current?.value as string,
-        password: passwordRef.current?.value as string,
-      });
-      console.log(res);
-      setLoginData(res.data);
-      router.push("/profile");
+      mutateUser(
+        await fetchJson("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: usernameRef.current?.value,
+            password: passwordRef.current?.value,
+          }),
+        }),
+        false
+      );
     } catch (error) {
-      console.log(error);
+      console.error("An unexpected error happened:", error);
     }
 
     setProcessing(false);
   };
-
-  useEffect(() => {
-    if (token) {
-      router.push("/profile");
-    }
-  }, []);
 
   return (
     <Layout title="Login">

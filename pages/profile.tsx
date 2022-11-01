@@ -1,23 +1,42 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Layout from "layouts/one-column-layout";
-import useAuthStore from "stores/auth";
-import { useRouter } from "next/router";
+import { withSessionSsr } from "utils/withSession";
+import { User } from "hooks/useUser";
 
-export default function ProfilePage() {
-  const router = useRouter();
-  const token = useAuthStore((state) => state.token);
-  const displayName = useAuthStore((state) => state.displayName);
+export const getServerSideProps = withSessionSsr(
+  async function getServerSideProps({ req, res }) {
+    const user = req.session.user;
 
-  useEffect(() => {
-    if (!token) {
-      router.push("/login");
+    console.log("Profile SSR Props:", user);
+
+    if (user === undefined) {
+      res.setHeader("location", "/login");
+      res.statusCode = 302;
+      res.end();
+      return {
+        props: {
+          user: { id: 0, displayName: "", token: "" } as User,
+        },
+      };
     }
-  }, [token]);
 
+    return {
+      props: {
+        user,
+      },
+    };
+  }
+);
+
+interface Props {
+  user: User;
+}
+
+export default function ProfilePage({ user }: Props) {
   return (
-    <Layout title={displayName}>
+    <Layout title={user.displayName}>
       <div>
-        <h1 className="text-4xl mt-10">Comming soom</h1>
+        <pre>{JSON.stringify(user)}</pre>
       </div>
     </Layout>
   );

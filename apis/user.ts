@@ -9,3 +9,12 @@ export function Login(data: { username: string; password: string }) {
 
   return response;
 }
+
+export function Me() {
+  const response = request({
+    url: `/wp/v2/users/me`,
+    method: "get",
+  });
+
+  return response;
+}

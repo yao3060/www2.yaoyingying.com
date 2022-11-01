@@ -1,6 +1,7 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import useAuthStore from "stores/auth";
+import React, { useEffect } from "react";
+import { useRouter } from "next/router";
+import useUser from "hooks/useUser";
 
 function Icon() {
   return (
@@ -16,22 +17,17 @@ function Icon() {
 }
 
 export default function UserMenu() {
-  const token = useAuthStore((state) => state.token);
-  const [init, setInit] = useState(false);
+  const { user, mutateUser } = useUser();
+  const router = useRouter();
 
-  function Logout() {
+  function Logout(e: Event) {
+    e.preventDefault();
     console.log("Logout");
+    mutateUser({ id: 0, displayName: "", token: "" }, false);
+    router.push("/login");
   }
 
-  useEffect(() => {
-    setInit(true);
-  }, []);
-
-  if (!init) {
-    return null;
-  }
-
-  if (!token) {
+  if (!user || user.id < 1) {
     return (
       <div className="ml-5 dropdown dropdown-end">
         <Link href="/login">
@@ -63,7 +59,7 @@ export default function UserMenu() {
           </Link>
         </li>
         <li>
-          <a onClick={() => Logout()}>Logout</a>
+          <a onClick={(e) => Logout(e)}>Logout</a>
         </li>
       </ul>
     </div>
