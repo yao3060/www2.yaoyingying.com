@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { MouseEvent } from "react";
 import { useRouter } from "next/router";
 import useUser from "hooks/useUser";
 
@@ -20,7 +20,7 @@ export default function UserMenu() {
   const { user, mutateUser } = useUser();
   const router = useRouter();
 
-  function Logout(e: Event) {
+  function Logout(e: MouseEvent) {
     e.preventDefault();
     console.log("Logout");
     mutateUser({ id: 0, displayName: "", token: "" }, false);
@@ -59,7 +59,9 @@ export default function UserMenu() {
           </Link>
         </li>
         <li>
-          <a onClick={(e) => Logout(e)}>Logout</a>
+          <a href="#" onClick={(e) => Logout(e)}>
+            Logout
+          </a>
         </li>
       </ul>
     </div>
