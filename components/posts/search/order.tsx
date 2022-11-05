@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import usePostStore from "stores/posts";
 import shallow from "zustand/shallow";
-import { StringParam, useQueryParam, withDefault } from "use-query-params";
+import { useRouter } from "next/router";
 
 export default function PostsSearchOrder() {
-  const [checked, setChecked] = React.useState(true);
-  const [order] = useQueryParam("order", withDefault(StringParam, undefined));
+  const router = useRouter();
+  const { order } = router.query;
+  const [checked, setChecked] = useState(true);
 
   const filter = usePostStore((state) => state.filter, shallow);
   const setFilter = usePostStore((state) => state.setFilter);

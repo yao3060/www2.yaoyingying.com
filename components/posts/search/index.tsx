@@ -5,7 +5,6 @@ import PostsSearchKeyword from "./keyword";
 import PostsSearchTags from "./tags";
 import qs from "qs";
 import shallow from "zustand/shallow";
-import { useEffectOnce } from "react-use";
 import PostsSearchOrder from "./order";
 
 export default function PostsSearch() {

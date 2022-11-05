@@ -12,13 +12,11 @@ const PageHeader = ({
 }) => {
   const style: CSSProperties = {};
 
-  useEffect(() => {
-    if (bgImage) {
-      style.backgroundImage = `url(${bgImage})`;
-      style.backgroundRepeat = "no-repeat";
-      style.backgroundSize = "cover";
-    }
-  }, []);
+  if (bgImage) {
+    style.backgroundImage = `url(${bgImage})`;
+    style.backgroundRepeat = "no-repeat";
+    style.backgroundSize = "cover";
+  }
 
   return (
     <>
@@ -29,7 +27,8 @@ const PageHeader = ({
         >
           <div className="container m-auto">
             <h1
-              className={classNames("text-2xl", {
+              className={classNames({
+                "text-2xl": !bgImage,
                 "text-4xl text-white text-center": bgImage,
               })}
             >
