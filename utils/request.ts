@@ -23,7 +23,6 @@ instance.interceptors.request.use(
     }
 
     const authToken = getToken();
-    console.log("jwt token:", authToken);
 
     if (authToken) {
       config.headers.Authorization = `Bearer ${authToken}`;

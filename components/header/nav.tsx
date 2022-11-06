@@ -38,7 +38,7 @@ const Nav = () => {
         )}
         <li tabIndex={0}>
           <Link href="#">
-            <a>
+            <a className={activeClassName("/packages")}>
               Packages
               <svg
                 className="fill-current"
@@ -66,12 +66,12 @@ const Nav = () => {
         </li>
         <li>
           <Link href="/products">
-            <a>Products</a>
+            <a className={activeClassName("/products")}>Products</a>
           </Link>
         </li>
         <li>
           <Link href="/contact">
-            <a>Contact</a>
+            <a className={activeClassName("/contact")}>Contact</a>
           </Link>
         </li>
         <li>
