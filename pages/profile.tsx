@@ -5,7 +5,7 @@ import { User } from "hooks/useUser";
 
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, res }) {
-    const user = req.session.user;
+    const { user } = req.session;
 
     console.log("Profile SSR Props:", user);
 
@@ -15,7 +15,7 @@ export const getServerSideProps = withSessionSsr(
       res.end();
       return {
         props: {
-          user: { id: 0, displayName: "", token: "" } as User,
+          user: { token: "", displayName: "", email: "", nicename: "" } as User,
         },
       };
     }
@@ -33,8 +33,9 @@ interface Props {
 }
 
 export default function ProfilePage({ user }: Props) {
+  user.token = "SE.CR.ET";
   return (
-    <Layout title={user.displayName}>
+    <Layout title={user.displayName ?? "displayName"}>
       <div>
         <pre>{JSON.stringify(user)}</pre>
       </div>

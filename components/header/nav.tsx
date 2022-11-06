@@ -6,8 +6,6 @@ const Nav = () => {
   const router = useRouter();
   const [code, setCode] = useState(false);
 
-  console.log("Nav:", router);
-
   const activeClassName = (pathname: string) => {
     return router.pathname == pathname ? "active" : "";
   };

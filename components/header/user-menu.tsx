@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { MouseEvent } from "react";
 import { useRouter } from "next/router";
 import useUser from "hooks/useUser";
+import useSWR from "swr";
 
 function Icon() {
   return (
@@ -20,14 +21,19 @@ export default function UserMenu() {
   const { user, mutateUser } = useUser();
   const router = useRouter();
 
-  function Logout(e: MouseEvent) {
+  async function Logout(e: MouseEvent) {
     e.preventDefault();
     console.log("Logout");
-    mutateUser({ id: 0, displayName: "", token: "" }, false);
+    mutateUser({ token: "", displayName: "", email: "", nicename: "" }, false);
+
+    fetch("/api/auth/logout")
+      .then((res) => res.json())
+      .then((data) => console.log("logout", data));
+
     router.push("/login");
   }
 
-  if (!user || user.id < 1) {
+  if (!user || user.token === "") {
     return (
       <div className="ml-5 dropdown dropdown-end">
         <Link href="/login">

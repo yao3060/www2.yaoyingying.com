@@ -14,6 +14,8 @@ export default async function fetchJson<JSON = unknown>(
     return data;
   }
 
+  console.log("response:", response);
+
   throw new FetchError({
     message: response.statusText,
     response,

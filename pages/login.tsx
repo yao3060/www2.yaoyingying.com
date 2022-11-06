@@ -25,14 +25,14 @@ const LoginPage = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            username: usernameRef.current?.value,
-            password: passwordRef.current?.value,
+            username: usernameRef.current?.value as string,
+            password: passwordRef.current?.value as string,
           }),
         }),
         false
       );
-    } catch (error) {
-      console.error("An unexpected error happened:", error);
+    } catch (error: any) {
+      console.error("An unexpected error happened:", error.response.data);
     }
 
     setProcessing(false);
