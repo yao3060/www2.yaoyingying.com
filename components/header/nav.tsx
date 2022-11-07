@@ -56,6 +56,11 @@ const Nav = () => {
               </Link>
             </li>
             <li>
+              <Link href="/packages/swr">
+                <a>SWR</a>
+              </Link>
+            </li>
+            <li>
               <Link href="/packages/mega-menu">
                 <a>Mega Menu</a>
               </Link>
