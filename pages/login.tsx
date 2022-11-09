@@ -2,8 +2,26 @@ import React, { useRef, FormEvent, useState } from "react";
 import Layout from "layouts/one-column-layout";
 import useUser from "hooks/useUser";
 import fetchJson from "utils/fetchJson";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetServerSideProps } from "next";
+
+type Props = {
+  // Add custom props here
+};
+
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  locale,
+}) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+};
 
 const LoginPage = () => {
+  const { t } = useTranslation("common");
   // here we just check if user is already logged in and redirect to profile
   const { mutateUser } = useUser({
     redirectTo: "/profile",
@@ -39,7 +57,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Layout title="Login">
+    <Layout title={t("login")}>
       <div className="flex items-center w-full">
         <div className="w-1/2">
           <span>AD Image</span>
@@ -49,7 +67,7 @@ const LoginPage = () => {
           <form ref={formRef} onSubmit={(e) => signIn(e)}>
             <div className="form-control w-full max-w-xs">
               <label className="label">
-                <span className="label-text">Username</span>
+                <span className="label-text">{t("username")}</span>
               </label>
               <input
                 ref={usernameRef}
@@ -61,7 +79,7 @@ const LoginPage = () => {
 
             <div className="form-control w-full max-w-xs mt-5">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text">{t("password")}</span>
               </label>
               <input
                 ref={passwordRef}
@@ -72,7 +90,7 @@ const LoginPage = () => {
             </div>
 
             <div className="form-control w-full max-w-xs mt-5">
-              <button className="btn btn-block">
+              <button className="btn btn-block tracking-widest">
                 {processing ? (
                   <>
                     <svg
@@ -98,7 +116,7 @@ const LoginPage = () => {
                     Processing...
                   </>
                 ) : (
-                  "Login"
+                  t("login")
                 )}
               </button>
             </div>

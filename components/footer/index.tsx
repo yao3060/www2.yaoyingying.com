@@ -1,8 +1,11 @@
 import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { FaAngleDoubleUp } from "react-icons/fa";
+import { useTranslation } from "next-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation("common");
+
   const intersectionRef = useRef<HTMLDivElement>(null);
   const [fixedFooter, setFixedFooter] = useState(false);
 
@@ -21,7 +24,7 @@ const Footer = () => {
         "fixed bottom-0": fixedFooter,
       })}
     >
-      <div className="container relative m-auto py-9">
+      <div className="flex justify-between container relative m-auto py-9">
         {!fixedFooter && (
           <a
             className="back-to-top -rotate-45 block cursor-pointer absolute right-0 rounded-tr-2xl -top-6 text-neutral-content bg-neutral text-2xl font-thin w-12 h-12 text-center"
@@ -42,6 +45,7 @@ const Footer = () => {
         <p className="text-center text-gray-300">
           Copyright &copy; 2022 姚迎迎 – BY NextJS
         </p>
+        <p>{t("home")}</p>
       </div>
     </footer>
   );

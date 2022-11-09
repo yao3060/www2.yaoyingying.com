@@ -1,4 +1,5 @@
 const path = require("path");
+const { i18n } = require("./next-i18next.config");
 
 module.exports = {
   sassOptions: {
@@ -11,4 +12,5 @@ module.exports = {
       "yaoin.net",
     ],
   },
+  i18n,
 };

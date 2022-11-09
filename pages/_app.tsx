@@ -8,6 +8,7 @@ import { QueryParamProvider } from "use-query-params";
 import NextNProgress from "nextjs-progressbar";
 import { ThemeProvider } from "next-themes";
 import { store } from "stores/rematch";
+import { appWithTranslation } from "next-i18next";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -27,4 +28,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);
