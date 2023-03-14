@@ -2,9 +2,18 @@ import React from "react";
 import Layout from "layouts/one-column-layout";
 import Image18 from "assets/images/18.jpg";
 import { motion } from "framer-motion";
-
 import Welcome from "components/about/welcome";
 import Grids from "components/about/grids";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
 
 const AboutPage = () => {
   return (

@@ -4,6 +4,17 @@ import CommonSwiper from "components/common/swiper";
 import Prism from "prismjs";
 import "prismjs/themes/prism-coy.css";
 
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
+
 export default function PackageSwiper() {
   const code = `
 import React from "react";

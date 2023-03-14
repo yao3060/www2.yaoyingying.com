@@ -3,6 +3,16 @@ import Layout from "layouts/one-column-layout";
 import Prism from "prismjs";
 import "prismjs/themes/prism-coy.css";
 import ExampleMegaMenu from "components/example/mega-menu";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
 
 export default function PackageMegaMenu() {
   const code = `

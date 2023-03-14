@@ -6,15 +6,20 @@ import Head from "next/head";
 import { SITE_NAME, IMAGE_PLACEHOLDER } from "utils/constants";
 import Layout from "layouts/page-layout";
 import useSWR, { unstable_serialize } from "swr";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const API = "getPost";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  locale,
+}) => {
   const slug = params?.slug as string;
   const response = await getPost(slug);
 
   return {
     props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
       slug,
       fallback: {
         [unstable_serialize([API, slug])]: response.data[0] ?? [],

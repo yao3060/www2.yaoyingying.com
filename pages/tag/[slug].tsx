@@ -1,5 +1,15 @@
 import React from "react";
 import Layout from "layouts/page-layout";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
 
 function TagPage() {
   const content = `<h1>Comming Soom</h1>

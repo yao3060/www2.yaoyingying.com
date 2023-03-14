@@ -8,6 +8,16 @@ import Loading from "components/common/loading";
 import PostsSearch from "components/posts/search";
 import usePostStore from "stores/posts";
 import shallow from "zustand/shallow";
+import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
 
 const PostsPage = () => {
   const filter = usePostStore((state) => state.filter, shallow);

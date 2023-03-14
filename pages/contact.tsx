@@ -1,8 +1,18 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Layout from "layouts/one-column-layout";
 import { RootState, Dispatch } from "stores/rematch";
 import classNames from "classnames";
+import { GetStaticProps } from "next";
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
 
 const ContactPage = () => {
   const isLoading = useSelector(

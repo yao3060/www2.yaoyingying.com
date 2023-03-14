@@ -8,6 +8,7 @@ import ProductGallery from "components/product/gallery";
 import ProductAttributes from "components/product/attributes";
 import ProductDetails from "components/product/details";
 import AddToCart from "components/product/addToCart";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface Props {
   product: Product;
@@ -53,7 +54,10 @@ export default function ProductPage({ product }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  locale,
+}) => {
   // Fetch data from external API
   const product = await (
     await fetch(
@@ -64,6 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   // Pass data to the page via props
   return {
     props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
       product: product.data,
     },
   };

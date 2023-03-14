@@ -12,6 +12,7 @@ import PostItem from "components/posts/item";
 import Layout from "layouts/page-layout";
 import { useRouter } from "next/router";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function CategoryPage({ category }: { category: Category }) {
   const router = useRouter();
@@ -96,6 +97,7 @@ export default function CategoryPage({ category }: { category: Category }) {
 export const getServerSideProps: GetServerSideProps = async ({
   params,
   res,
+  locale,
 }) => {
   res.setHeader(
     "Cache-Control",
@@ -107,6 +109,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   const response = await getCategory(last(params?.slug) as string);
   return {
     props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
       category: response.data[0] ?? [],
     },
   };

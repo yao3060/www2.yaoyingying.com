@@ -4,6 +4,8 @@ import Head from "next/head";
 import { SITE_NAME } from "utils/constants";
 import { Product } from "interfaces";
 import ProductItem from "components/product/item";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetServerSideProps } from "next";
 
 interface Props {
   data: Product[];
@@ -35,7 +37,7 @@ export default function ProductsPage({ data }: Props) {
 }
 
 // This gets called on every request
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   // Fetch data from external API
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_APP_URL}/api/wc/v3/products`
@@ -43,5 +45,12 @@ export async function getServerSideProps() {
   const data = await res.json();
 
   // Pass data to the page via props
-  return { props: data };
-}
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+      data: data.data,
+      total: data.total,
+      pages: data.pages,
+    },
+  };
+};

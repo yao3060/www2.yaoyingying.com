@@ -4,7 +4,16 @@ import useSWR from "swr";
 import { getTodos } from "apis/jsonplaceholder";
 import Prism from "prismjs";
 import "prismjs/themes/prism-coy.css";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetStaticProps } from "next";
 
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
+    },
+  };
+};
 interface Todo {
   userId: number;
   id: number;
