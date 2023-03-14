@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { SITE_NAME, SITE_DESCRIPTION } from "utils/constants";
 import { getPosts } from "apis/posts";
 import { Post } from "../interfaces";
@@ -19,6 +20,7 @@ interface Data {
 export const getServerSideProps: GetServerSideProps<Data> = async ({
   query,
   res,
+  locale,
 }) => {
   res.setHeader(
     "Cache-Control",
@@ -29,6 +31,7 @@ export const getServerSideProps: GetServerSideProps<Data> = async ({
 
   return {
     props: {
+      ...(await serverSideTranslations(locale!, ["common"])),
       posts: response.data,
       total: Number(response.headers["x-wp-total"] ?? 0),
       pages: Number(response.headers["x-wp-totalpages"] ?? 1),

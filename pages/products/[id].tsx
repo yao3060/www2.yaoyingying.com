@@ -7,6 +7,7 @@ import { Product } from "interfaces";
 import ProductGallery from "components/product/gallery";
 import ProductAttributes from "components/product/attributes";
 import ProductDetails from "components/product/details";
+import AddToCart from "components/product/addToCart";
 
 interface Props {
   product: Product;
@@ -35,6 +36,8 @@ export default function ProductPage({ product }: Props) {
             ></p>
 
             <ProductAttributes product={product} />
+
+            <AddToCart product={product} />
 
             <div
               className="entry-content"
