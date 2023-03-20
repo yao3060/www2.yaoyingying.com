@@ -24,7 +24,7 @@ export default function ItemImage({ title, url, slug, width, height }: Props) {
 
   return (
     <div
-      className="w-[300px] h-[150px]"
+      className="w-[300px] h-[150px] m-auto"
       style={{
         backgroundImage: `url(${url})`,
         backgroundPosition: "center",

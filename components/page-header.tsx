@@ -22,7 +22,9 @@ const PageHeader = ({
     <>
       {title && (
         <div
-          className={classNames("hero bg-base-200 py-10", { "py-36": bgImage })}
+          className={classNames("hero bg-base-200 px-2.5 py-10", {
+            "py-36": bgImage,
+          })}
           style={style}
         >
           <div className="container m-auto">

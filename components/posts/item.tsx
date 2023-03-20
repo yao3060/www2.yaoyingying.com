@@ -9,8 +9,11 @@ const PostItem = ({ post }: { post: Post }) => {
   return (
     <>
       {" "}
-      <article id={`post-${post.id}`} className="flex flex-auto gap-4 py-5">
-        <div className="feature-image w-[300px] ">
+      <article
+        id={`post-${post.id}`}
+        className="flex flex-col lg:flex-row lg:gap-4 py-5"
+      >
+        <div className="feature-image w-full pb-5 lg:w-[300px] ">
           <ItemImage
             title={post.title.rendered}
             url={featuredMedia}
@@ -19,7 +22,7 @@ const PostItem = ({ post }: { post: Post }) => {
             height={150}
           />
         </div>
-        <div className="content flex-grow">
+        <div className="content lg:flex-grow">
           <div className="meta flex justify-between text-xs tracking-widest mb-2.5">
             <div className="text-[#0275d8] uppercase">{post.x_categories}</div>
             <div className="post-date">{post.x_date}</div>
