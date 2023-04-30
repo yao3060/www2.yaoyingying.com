@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { MouseEvent } from "react";
 import { useRouter } from "next/router";
 import useUser from "hooks/useUser";
-import useSWR from "swr";
 
 function Icon() {
   return (

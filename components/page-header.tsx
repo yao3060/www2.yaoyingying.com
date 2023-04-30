@@ -29,9 +29,9 @@ const PageHeader = ({
         >
           <div className="container m-auto">
             <h1
-              className={classNames({
-                "text-2xl": !bgImage,
-                "text-4xl text-white text-center": bgImage,
+              className={classNames("text-xl", {
+                "lg:text-2xl": !bgImage,
+                "lg:text-4xl text-white text-center": bgImage,
               })}
             >
               {title}
