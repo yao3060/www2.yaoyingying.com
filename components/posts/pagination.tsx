@@ -61,7 +61,9 @@ export default function Pagination({
       <div className="btn-group">
         <button
           onClick={onPrevious}
-          className={classNames("btn", { "btn-disabled": current === 1 })}
+          className={classNames("btn px-2.5  lg:px-4", {
+            "btn-disabled": current === 1,
+          })}
         >
           «
         </button>
@@ -69,7 +71,7 @@ export default function Pagination({
         {paginationRange.map((pageNumber, key) => {
           if (pageNumber === DOTS) {
             return (
-              <button key={key} className="btn btn-disabled">
+              <button key={key} className="btn px-2.5  lg:px-4 btn-disabled">
                 &#8230;
               </button>
             );
@@ -78,7 +80,7 @@ export default function Pagination({
           return (
             <button
               key={key}
-              className={classNames("btn", {
+              className={classNames("btn px-2.5 lg:px-4", {
                 "btn-active": pageNumber === current,
               })}
               onClick={() => onPageChanged(pageNumber as number)}
@@ -90,7 +92,9 @@ export default function Pagination({
 
         <button
           onClick={onNext}
-          className={classNames("btn", { "btn-disabled": current === pages })}
+          className={classNames("btn px-2.5  lg:px-4", {
+            "btn-disabled": current === pages,
+          })}
         >
           »
         </button>

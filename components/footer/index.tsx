@@ -20,11 +20,11 @@ const Footer = () => {
     <footer
       ref={intersectionRef}
       className={classNames({
-        "footer bg-neutral text-neutral-content": true,
+        "footer bg-neutral text-neutral-content px-2.5": true,
         "fixed bottom-0": fixedFooter,
       })}
     >
-      <div className="flex justify-between container relative m-auto py-9">
+      <div className="flex justify-between container relative m-auto py-9 ">
         {!fixedFooter && (
           <a
             className="back-to-top -rotate-45 block cursor-pointer absolute right-0 rounded-tr-2xl -top-6 text-neutral-content bg-neutral text-2xl font-thin w-12 h-12 text-center"
