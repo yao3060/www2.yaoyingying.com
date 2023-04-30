@@ -19,15 +19,10 @@ export default function PackageMegaMenu() {
 import React, { useState } from "react";
 import classNames from "classnames";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useClickAway } from "react-use";
 
 export default function ExampleMegaMenu() {
   const [parent] = useAutoAnimate<HTMLElement>();
   const [isHidden, setIsHidden] = useState(true);
-
-  useClickAway(parent, () => {
-    setIsHidden(true);
-  });
 
   return (
     <nav
