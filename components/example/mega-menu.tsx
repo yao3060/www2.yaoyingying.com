@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
+import autoAnimate from "@formkit/auto-animate";
 // import { useClickAway } from "react-use";
 
 export default function ExampleMegaMenu() {
-  const [parent] = useAutoAnimate();
+  const parent = useRef(null);
   const [isHidden, setIsHidden] = useState(true);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
 
   return (
     <nav

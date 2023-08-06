@@ -1,8 +1,9 @@
 import classNames from "classnames";
 import { Product, Variation } from "interfaces";
 import { capitalize, isEqual, isEqualWith } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import autoAnimate from "@formkit/auto-animate";
 
 type Props = { product: Product };
 type Attribute = Product["attributes"][0];
@@ -24,7 +25,12 @@ const variationsCompare = (
 };
 
 export default function ProductAttributes({ product }: Props) {
-  const [parent] = useAutoAnimate<HTMLDivElement>();
+  const parent = useRef(null);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
+
   const _visibles = product.attributes.map((attr) => attr.visible);
   const _variations = product.attributes.map((attr) => attr.variation);
 
