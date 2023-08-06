@@ -12,6 +12,8 @@ module.exports = {
       "yaoyingying-media.oss-cn-hongkong.aliyuncs.com",
       "www.yaoin.net",
       "yaoin.net",
+      "yaoyingying.com",
+      "www.yaoyingying.com"
     ],
   },
   i18n,
