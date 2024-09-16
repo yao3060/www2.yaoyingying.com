@@ -1,5 +1,5 @@
-import env from "@/env";
 import { WPPost } from "@/wordpress/wordpress";
+import { wpClient } from "@/wordpress/WPClient";
 import last from "lodash.last";
 
 export const dynamic = "force-static";
@@ -9,21 +9,10 @@ type PageProps = {
 };
 
 export default async function Page({ params }: PageProps) {
-  console.log("params", params);
-
   const slug = last(params.slug);
 
-  const request = await fetch(
-    `${env.WordPressRestAPI}/wp-json/wp/v2/posts?slug=${slug}`,
-    {
-      next: {
-        revalidate: 10,
-      },
-    },
-  );
-  const [post] = (await request.json()) as WPPost[];
-
-  console.log("post", post.id);
+  const response = await wpClient.fetch(`/wp-json/wp/v2/posts?slug=${slug}`);
+  const [post] = (await response.json()) as WPPost[];
 
   return (
     <div className="container m-auto py-10">

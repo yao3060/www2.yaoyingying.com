@@ -1,5 +1,8 @@
 import PostsList from "@/components/PostsList/PostsList";
 
+export const dynamic = "force-static";
+export const revalidate = 5;
+
 type PageProps = {
   searchParams?: {
     page?: string;

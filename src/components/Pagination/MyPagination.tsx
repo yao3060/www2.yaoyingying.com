@@ -56,7 +56,6 @@ function MyPagination({ pages, className }: MyPagination) {
             <>
               <PaginationItem>
                 <PaginationPrevious
-                  inert={currentPage <= 1}
                   className={clsx({
                     "pointer-events-none": currentPage <= 1,
                   })}
@@ -84,7 +83,6 @@ function MyPagination({ pages, className }: MyPagination) {
 
               <PaginationItem>
                 <PaginationNext
-                  inert={currentPage >= pages}
                   className={clsx({
                     "pointer-events-none": currentPage >= pages,
                   })}

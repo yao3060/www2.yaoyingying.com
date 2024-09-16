@@ -1,26 +1,22 @@
 import { WPPage } from "@/wordpress/wordpress";
-import env from "../../env";
+import { wpClient } from "@/wordpress/WPClient";
 import last from "lodash.last";
+
+export const dynamic = "force-static";
 
 type PageProps = {
   params: { slug: string[] };
 };
 
 export default async function Page({ params }: PageProps) {
-  console.log("params", params);
-
   const slug = last(params.slug);
 
-  const request = await fetch(
-    `${env.WordPressRestAPI}/wp-json/wp/v2/pages?slug=${slug}`,
-  );
-  const [page] = (await request.json()) as WPPage[];
-
-  console.log("pages", page);
+  const response = await wpClient.fetch(`/wp-json/wp/v2/pages?slug=${slug}`);
+  const [page] = (await response.json()) as WPPage[];
 
   return (
-    <div>
-      <article className="prose lg:prose-xl">
+    <div className="container m-auto">
+      <article className="prose py-10 lg:prose-xl">
         <header>
           <h1>{page.title.rendered}</h1>
         </header>

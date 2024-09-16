@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -aeuo pipefail
+
+source $HOME/.nvm/nvm.sh
+nvm use 20
+
+NODE_ENV=production && npm run --prefix="./src" build
+NODE_ENV=production && npm run --prefix="./src" start
