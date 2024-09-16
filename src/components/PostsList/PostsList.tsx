@@ -1,64 +1,19 @@
+"use client";
 import env from "@/env";
 import { WPFeaturedMedia, WPPost, WPTerm } from "@/wordpress/wordpress";
 import { wpClient } from "@/wordpress/WPClient";
-import Image from "next/image";
 import { HTMLAttributes } from "react";
+import PostThumb from "./PostThumb";
+import PostMeta from "./PostMeta";
+import MyPagination from "../Pagination/MyPagination";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-type ListPost = WPPost & {
+export type ListPost = WPPost & {
   _embedded: {
     "wp:featuredmedia": WPFeaturedMedia[];
     "wp:term": WPTerm[][];
   };
-};
-
-const PostMeta = ({ post }: { post: ListPost }) => {
-  const terms = post._embedded["wp:term"];
-  const primaryTerms = terms[0] ?? null;
-  if (!primaryTerms) return null;
-
-  return (
-    <div className="list-article-meta">
-      {primaryTerms.map((term) => {
-        const link = term.link.replaceAll(env.WordPressRestAPI, "");
-        return (
-          <a
-            key={term.id}
-            href={link}
-            rel={term.taxonomy}
-            dangerouslySetInnerHTML={{ __html: term.name }}
-          ></a>
-        );
-      })}
-    </div>
-  );
-};
-
-const PostThumb = ({ post }: { post: ListPost }) => {
-  const thumb = post._embedded["wp:featuredmedia"][0] ?? null;
-  if (!thumb) return null;
-
-  const postLink = post.link.replaceAll(env.WordPressRestAPI, "");
-  const src = thumb.source_url;
-
-  return (
-    <div className="list-article-thumb w-[250px] ">
-      {thumb ? (
-        <a href={postLink}>
-          <Image
-            width="250"
-            height="150"
-            src={src}
-            className=""
-            alt={thumb.alt_text}
-            placeholder="blur"
-            blurDataURL={`${src}?x-oss-process=image/resize,m_fill,h_150,w_250/blur,r_10,s_10`}
-          />
-        </a>
-      ) : (
-        <div className="w-[250px] h-[150px] bg-slate-50"></div>
-      )}
-    </div>
-  );
 };
 
 type PostsListProps = HTMLAttributes<HTMLDivElement> & {
@@ -80,16 +35,26 @@ const PostsList = async ({
   showExcerpt,
   className = "flex flex-col gap-4 ",
 }: PostsListProps) => {
+  const searchParams = useSearchParams();
+  const currentPage = searchParams.has("page")
+    ? parseInt(searchParams.get("page") as string)
+    : 1;
+
   const response = await wpClient.fetch(endpoint, {
-    params,
+    params: { ...params, page: currentPage },
   });
+  const headers = response.headers;
   const posts = (await response.json()) as ListPost[];
+
+  //get  x-wp-total, x-wp-totalpages
+  const total = parseInt(headers.get("x-wp-total") ?? `0`);
+  const totalPages = parseInt(headers.get("x-wp-totalpages") ?? `0`);
 
   return (
     <div className={`${className}`}>
       {title && <h2 className=" text-2xl">{title}</h2>}
 
-      <div>
+      <div data-total-posts={total} data-total-pages={totalPages}>
         {posts.map((post) => {
           const postLink = post.link.replaceAll(env.WordPressRestAPI, "");
 
@@ -121,6 +86,13 @@ const PostsList = async ({
           );
         })}
       </div>
+      <Suspense>
+        <MyPagination
+          className="py-4"
+          pages={totalPages}
+          currentPage={currentPage}
+        />
+      </Suspense>
     </div>
   );
 };
