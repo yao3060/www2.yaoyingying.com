@@ -90,3 +90,13 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+
+.prose {
+  .wp-block-kevinbatdorf-code-block-pro {
+    pre {
+      margin: 0;
+      border-radius: 0;
+    }
+  }
+}
