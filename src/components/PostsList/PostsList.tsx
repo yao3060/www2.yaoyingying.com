@@ -1,4 +1,3 @@
-"use client";
 import env from "@/env";
 import { WPFeaturedMedia, WPPost, WPTerm } from "@/wordpress/wordpress";
 import { wpClient } from "@/wordpress/WPClient";
@@ -7,7 +6,6 @@ import PostThumb from "./PostThumb";
 import PostMeta from "./PostMeta";
 import MyPagination from "../Pagination/MyPagination";
 import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 
 export type ListPost = WPPost & {
   _embedded: {
@@ -19,6 +17,7 @@ export type ListPost = WPPost & {
 type PostsListProps = HTMLAttributes<HTMLDivElement> & {
   title?: string;
   endpoint?: string;
+  currentPage: number;
   params?: Record<string, string>;
   showMeta?: boolean;
   showExcerpt?: boolean;
@@ -26,6 +25,7 @@ type PostsListProps = HTMLAttributes<HTMLDivElement> & {
 const PostsList = async ({
   title,
   endpoint = `/wp-json/wp/v2/posts`,
+  currentPage,
   params = {
     _embed: "wp:term,wp:featuredmedia",
     _fields:
@@ -35,11 +35,6 @@ const PostsList = async ({
   showExcerpt,
   className = "flex flex-col gap-4 ",
 }: PostsListProps) => {
-  const searchParams = useSearchParams();
-  const currentPage = searchParams.has("page")
-    ? parseInt(searchParams.get("page") as string)
-    : 1;
-
   const response = await wpClient.fetch(endpoint, {
     params: { ...params, page: currentPage },
   });
@@ -92,11 +87,7 @@ const PostsList = async ({
         })}
       </div>
       <Suspense>
-        <MyPagination
-          className="py-4"
-          pages={totalPages}
-          currentPage={currentPage}
-        />
+        <MyPagination className="py-4" pages={totalPages} />
       </Suspense>
     </div>
   );

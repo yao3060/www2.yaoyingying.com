@@ -7,42 +7,38 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useSearchParams, usePathname } from "next/navigation";
-import PaginationItems from "./PaginationItems";
-import { useCallback } from "react";
 import clsx from "clsx";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
+import PaginationItems from "./PaginationItems";
 
 type MyPagination = {
   pages: number;
-  currentPage: number;
   className?: string;
 };
 
 /**
  * @example
  *    <Suspense>
- *       <MyPagination className="py-4" pages={10} currentPage={1}/>
+ *       <MyPagination className="py-4" pages={10}  />
  *    </Suspense>
  *
  * @param param0
  * @returns
  */
-function MyPagination({ pages, currentPage, className }: MyPagination) {
+function MyPagination({ pages, className }: MyPagination) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
 
-  // Get a new searchParams string by merging the current
-  // searchParams with a provided key/value pair
-  const createQueryString = useCallback((name: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set(name, value);
-
-    return params.toString();
-  }, []);
-
-  const createNewUrl = useCallback((p: number) => {
-    return `${pathname}?${createQueryString("page", p.toString())}` as __next_route_internal_types__.RouteImpl<string>;
-  }, []);
+  const createPageURL = useCallback(
+    (p: number | string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set("page", p.toString());
+      return `${pathname}?${params.toString()}` as __next_route_internal_types__.RouteImpl<string>;
+    },
+    [pathname, searchParams]
+  );
 
   return (
     <Pagination className={`${className}`}>
@@ -54,7 +50,7 @@ function MyPagination({ pages, currentPage, className }: MyPagination) {
               from={1}
               to={pages}
               current={currentPage}
-              createNewUrl={createNewUrl}
+              createPageURL={createPageURL}
             />
           ) : (
             <>
@@ -64,7 +60,7 @@ function MyPagination({ pages, currentPage, className }: MyPagination) {
                   className={clsx({
                     "pointer-events-none": currentPage <= 1,
                   })}
-                  href={createNewUrl(currentPage - 1)}
+                  href={createPageURL(currentPage - 1)}
                 />
               </PaginationItem>
 
@@ -72,7 +68,7 @@ function MyPagination({ pages, currentPage, className }: MyPagination) {
                 from={1}
                 to={3}
                 current={currentPage}
-                createNewUrl={createNewUrl}
+                createPageURL={createPageURL}
               />
 
               <PaginationItem>
@@ -83,7 +79,7 @@ function MyPagination({ pages, currentPage, className }: MyPagination) {
                 from={pages - 2}
                 to={pages}
                 current={currentPage}
-                createNewUrl={createNewUrl}
+                createPageURL={createPageURL}
               />
 
               <PaginationItem>
@@ -92,7 +88,7 @@ function MyPagination({ pages, currentPage, className }: MyPagination) {
                   className={clsx({
                     "pointer-events-none": currentPage >= pages,
                   })}
-                  href={createNewUrl(currentPage + 1)}
+                  href={createPageURL(currentPage + 1)}
                 />
               </PaginationItem>
             </>

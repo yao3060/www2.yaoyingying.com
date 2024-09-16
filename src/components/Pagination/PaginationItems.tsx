@@ -9,13 +9,13 @@ const PaginationItems = ({
   from,
   to,
   current = 1,
-  createNewUrl,
+  createPageURL,
 }: {
   from: number;
   to: number;
   current: number;
-  createNewUrl: (
-    page: number,
+  createPageURL: (
+    page: number | string,
   ) => __next_route_internal_types__.RouteImpl<string>;
 }) => {
   const pages = ArrayFromTo(from, to);
@@ -24,7 +24,7 @@ const PaginationItems = ({
       {pages.map((index) => (
         <PaginationItem key={index}>
           <PaginationLink
-            href={createNewUrl(index)}
+            href={createPageURL(index)}
             isActive={index === current}
           >
             {index}
