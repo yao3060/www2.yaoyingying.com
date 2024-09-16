@@ -31,7 +31,7 @@ type WPFeaturedMedia = {
   };
   author: number;
   featured_media: number;
-  acf: Array<any>;
+
   caption: {
     rendered: string;
   };
@@ -62,7 +62,6 @@ type WPTerm = {
   name: string;
   slug: string;
   taxonomy: string;
-  acf: Array<any>;
 };
 
 export type MenuItem = {

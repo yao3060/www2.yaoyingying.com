@@ -2,10 +2,9 @@ import env from "@/env";
 import { WPFeaturedMedia, WPPost, WPTerm } from "@/wordpress/wordpress";
 import { wpClient } from "@/wordpress/WPClient";
 import { HTMLAttributes } from "react";
-import PostThumb from "./PostThumb";
+import MyPagination from "./Pagination/MyPagination";
 import PostMeta from "./PostMeta";
-import MyPagination from "../Pagination/MyPagination";
-import { Suspense } from "react";
+import PostThumb from "./PostThumb";
 
 export type ListPost = WPPost & {
   _embedded: {
@@ -14,29 +13,30 @@ export type ListPost = WPPost & {
   };
 };
 
+const defaultParams = {
+  _embed: "wp:term,wp:featuredmedia",
+  _fields: "id,title,excerpt,link,modified,format,class_list,_links,_embedded",
+};
+
 type PostsListProps = HTMLAttributes<HTMLDivElement> & {
   title?: string;
   endpoint?: string;
-  currentPage: number;
   params?: Record<string, string>;
   showMeta?: boolean;
   showExcerpt?: boolean;
+  showPagination?: boolean;
 };
 const PostsList = async ({
   title,
   endpoint = `/wp-json/wp/v2/posts`,
-  currentPage,
-  params = {
-    _embed: "wp:term,wp:featuredmedia",
-    _fields:
-      "id,title,excerpt,link,modified,format,class_list,_links,_embedded",
-  },
+  params = {},
   showMeta,
   showExcerpt,
+  showPagination,
   className = "flex flex-col gap-4 ",
 }: PostsListProps) => {
   const response = await wpClient.fetch(endpoint, {
-    params: { ...params, page: currentPage },
+    params: { ...defaultParams, ...params },
   });
   const headers = response.headers;
   const posts = (await response.json()) as ListPost[];
@@ -47,16 +47,19 @@ const PostsList = async ({
 
   return (
     <div className={`${className}`}>
-      {title && <h2 className=" text-2xl">{title}</h2>}
+      {title && <h2 className="text-2xl">{title}</h2>}
 
-      <div data-total-posts={total} data-total-pages={totalPages}>
+      <div
+        data-total-posts={total}
+        data-total-pages={totalPages}
+      >
         {posts.map((post) => {
           const postLink = post.link.replaceAll(env.WordPressRestAPI, "");
 
           return (
             <article
               key={post.id}
-              className={`border-b py-6 grid grid-cols-[250px,_1fr] gap-4  ${post.class_list.join(" ")}`}
+              className={`grid grid-cols-[250px,_1fr] gap-4 border-b py-6 ${post.class_list.join(" ")}`}
             >
               <PostThumb post={post} />
 
@@ -86,9 +89,14 @@ const PostsList = async ({
           );
         })}
       </div>
-      <Suspense>
-        <MyPagination className="py-4" pages={totalPages} />
-      </Suspense>
+      {showPagination && (
+        <>
+          <MyPagination
+            className="py-4"
+            pages={totalPages}
+          />
+        </>
+      )}
     </div>
   );
 };

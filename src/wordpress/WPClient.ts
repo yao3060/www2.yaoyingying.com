@@ -3,7 +3,7 @@ import { stringify } from "qs";
 import { WPBasePost, WPPage, WPPost } from "./wordpress";
 
 type Language = "en" | "zh-hans";
-const defaultLanguage = "en";
+// const defaultLanguage = "en";
 
 type WpClientConfig = {
   baseURL: string;
@@ -24,7 +24,7 @@ export class HttpError extends Error {
     super(
       `Got HTTP error ${response.status} while doing ${init.method || "GET"} ${
         response.url
-      }`,
+      }`
     );
     this.response = response;
     this.init = init;
@@ -113,7 +113,7 @@ export default class WPClient {
       }
       if (id) {
         const response = await this.fetch(
-          `/wp-json/wp/v2/${params.postType}/${id}`,
+          `/wp-json/wp/v2/${params.postType}/${id}`
         );
         const data = (await response.json()) as T;
         return data;

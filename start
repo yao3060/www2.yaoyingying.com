@@ -2,14 +2,10 @@
 set -aeuo pipefail
 
 # create the dotenv file if it doesn't exist
-if [ ! -f .env ]; then
-  cp .env.default .env
-fi
-
-if [ ! -f src/.env ]; then
-  cp .env src/.env
+if [ ! -f .env.local ]; then
+  cp .env .env.local
 fi
 
 source .env
 
-npm  i --prefix src --verbose && npm run $@ --prefix src
+npm  i  --verbose && npm run dev

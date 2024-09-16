@@ -8,7 +8,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import clsx from "clsx";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCallback } from "react";
 import PaginationItems from "./PaginationItems";
 
@@ -27,18 +27,13 @@ type MyPagination = {
  * @returns
  */
 function MyPagination({ pages, className }: MyPagination) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
+  const params = useParams<{ id: string }>();
+  console.log("MyPagination:params", params);
+  const currentPage = Number(params.id) || 1;
 
-  const createPageURL = useCallback(
-    (p: number | string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set("page", p.toString());
-      return `${pathname}?${params.toString()}` as __next_route_internal_types__.RouteImpl<string>;
-    },
-    [pathname, searchParams]
-  );
+  const createPageURL = useCallback((p: number | string) => {
+    return `/page/${p}` as __next_route_internal_types__.RouteImpl<string>;
+  }, []);
 
   return (
     <Pagination className={`${className}`}>
@@ -56,6 +51,7 @@ function MyPagination({ pages, className }: MyPagination) {
             <>
               <PaginationItem>
                 <PaginationPrevious
+                  size="default"
                   className={clsx({
                     "pointer-events-none": currentPage <= 1,
                   })}
@@ -83,6 +79,7 @@ function MyPagination({ pages, className }: MyPagination) {
 
               <PaginationItem>
                 <PaginationNext
+                  size="default"
                   className={clsx({
                     "pointer-events-none": currentPage >= pages,
                   })}

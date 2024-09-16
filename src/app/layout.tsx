@@ -1,9 +1,9 @@
+import Footer from "@/components/Footer/Footer";
+import Header from "@/components/Header/Header";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,10 +34,16 @@ export default function RootLayout({
         <Providers>
           <Header />
           <div className="site-content">
-            <main id="main" role="main">
+            <main
+              id="main"
+              role="main"
+            >
               {children}
             </main>
-            <div id="secondary" role="complementary">
+            <div
+              id="secondary"
+              role="complementary"
+            >
               {/* <aside className="widget"/> */}
             </div>
           </div>

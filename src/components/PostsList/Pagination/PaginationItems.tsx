@@ -15,7 +15,7 @@ const PaginationItems = ({
   to: number;
   current: number;
   createPageURL: (
-    page: number | string,
+    page: number | string
   ) => __next_route_internal_types__.RouteImpl<string>;
 }) => {
   const pages = ArrayFromTo(from, to);
