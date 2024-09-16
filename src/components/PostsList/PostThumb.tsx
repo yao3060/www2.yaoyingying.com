@@ -3,7 +3,7 @@ import { ListPost } from "./PostsList";
 import env from "@/env";
 
 const PostThumb = ({ post }: { post: ListPost }) => {
-  const thumb = post._embedded["wp:featuredmedia"][0] ?? null;
+  const thumb = post._embedded["wp:featuredmedia"]?.[0] ?? null;
   if (!thumb) return null;
 
   const postLink = post.link.replaceAll(env.WordPressRestAPI, "");

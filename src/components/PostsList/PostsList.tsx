@@ -70,7 +70,12 @@ const PostsList = async ({
 
                 <header>
                   <h3 className="text-xl">
-                    <a href={`${postLink}`}>{post.title.rendered}</a>
+                    <a
+                      href={`${postLink}`}
+                      dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                    >
+                      {}
+                    </a>
                   </h3>
                 </header>
                 {showExcerpt && (

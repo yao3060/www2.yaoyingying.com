@@ -26,7 +26,7 @@ export default async function Page({ params }: PageProps) {
   console.log("post", post.id);
 
   return (
-    <div className="container m-auto">
+    <div className="container m-auto py-10">
       <article className="prose lg:prose-xl">
         <header>
           <h1>{post.title.rendered}</h1>
