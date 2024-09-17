@@ -1,3 +1,4 @@
+import PageViews from "@/components/PageViews/PageViews";
 import { WPPage } from "@/wordpress/wordpress";
 import { wpClient } from "@/wordpress/WPClient";
 import last from "lodash.last";
@@ -20,6 +21,9 @@ export default async function Page({ params }: PageProps) {
         <header>
           <h1>{page.title.rendered}</h1>
         </header>
+        <div className=" ">
+          <PageViews />
+        </div>
         <div dangerouslySetInnerHTML={{ __html: page.content.rendered }} />
       </article>
     </div>

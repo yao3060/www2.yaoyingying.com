@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import AppProvider from "@/providers/AppProvider";
 import { useServerInsertedHTML } from "next/navigation";
+import React, { useState } from "react";
 import { StyleRegistry, createStyleRegistry } from "styled-jsx";
 import { SWRConfig } from "swr";
 
@@ -17,8 +18,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <StyleRegistry registry={jsxStyleRegistry}>
-      <SWRConfig>{children}</SWRConfig>
-    </StyleRegistry>
+    <AppProvider>
+      <StyleRegistry registry={jsxStyleRegistry}>
+        <SWRConfig>{children}</SWRConfig>
+      </StyleRegistry>
+    </AppProvider>
   );
 }

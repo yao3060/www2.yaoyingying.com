@@ -22,9 +22,11 @@
     "sharp": "^0.33.5",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
+    "@redux-devtools/extension": "^3.3.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/lodash.last": "^3.0.9",
     "@types/node": "^20",
