@@ -1,6 +1,8 @@
 import env from "@/env";
 import { WPFeaturedMedia, WPPost, WPTerm } from "@/wordpress/wordpress";
 import { wpClient } from "@/wordpress/WPClient";
+import { Route } from "next";
+import Link from "next/link";
 import { HTMLAttributes } from "react";
 import MyPagination from "./Pagination/MyPagination";
 import PostMeta from "./PostMeta";
@@ -54,7 +56,10 @@ const PostsList = async ({
         data-total-pages={totalPages}
       >
         {posts.map((post) => {
-          const postLink = post.link.replaceAll(env.WordPressRestAPI, "");
+          const postLink = post.link.replaceAll(
+            env.WordPressRestAPI,
+            ""
+          ) as Route;
 
           return (
             <article
@@ -68,12 +73,10 @@ const PostsList = async ({
 
                 <header>
                   <h3 className="text-xl">
-                    <a
-                      href={`${postLink}`}
+                    <Link
+                      href={postLink}
                       dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-                    >
-                      {}
-                    </a>
+                    ></Link>
                   </h3>
                 </header>
                 {showExcerpt && (
