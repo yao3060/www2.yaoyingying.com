@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -aeuo pipefail
+
+# create the dotenv file if it doesn't exist
+if [ ! -f .env.local ]; then
+  cp .env .env.local
+fi
+
+docker run --rm --interactive --tty \
+  --name yyy-nextjs \
+  --workdir /app \
+  --volume $PWD:/app \
+  -p 3000:3000 \
+  node:20-alpine npm run dev
+

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -aeuo pipefail
+
+docker run --rm --interactive --tty \
+  --workdir /app \
+  --volume $PWD:/app \
+  node:20-alpine npm  i  --verbose
+
