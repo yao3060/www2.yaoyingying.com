@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -56,6 +57,7 @@ export default function RootLayout({
           <Footer />
         </Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
